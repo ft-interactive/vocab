@@ -1,0 +1,47 @@
+{
+  "name": "example-starter",
+  "productName": "ExampleStarter",
+  "version": "0.0.0",
+  "description": "My rad app",
+  "license": "MIT",
+  "repository": "ft-interactive/example-starter",
+  "author": {
+    "name": "Ændrew Rininsland",
+    "email": "andrew.rininsland@ft.com",
+    "url": "ig.ft.com"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "dropzone": "^4.3.0",
+    "electron-debug": "^1.0.0",
+    "electron-json-storage": "^2.0.0",
+    "text-converter": "github:ft-interactive/txtconverter#1.0.3"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron-packager": "^7.0.0",
+    "electron-prebuilt": "^1.3.3",
+    "xo": "^0.15.0"
+  },
+  "xo": {
+    "esnext": true,
+    "spaces": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
