@@ -1,0 +1,10 @@
+&	Narrow	Wide
+Airbus 	5558	1257
+Boeing	4044	1653
+&title=Commercial aircraft order backlog 		
+"&subtitle=Number of jets, as at Jul 2016"		
+&source=companies		
+&footnote=delete if not required		
+&comment=Any message you want Graphics to see during processing; delete if not required		
+&doublescale=0		
+&accumulate=true		

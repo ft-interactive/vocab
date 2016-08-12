@@ -1,53 +1,75 @@
-'use strict';
+/**
+ * Main controller for Example Starter
+ */
+
 const electron = require('electron');
-const autoUpdater = electron.autoUpdater;
-const os = require('os');
+// const os = require('os');
+const storage = require('electron-json-storage');
+const buildExample = require('./base/buildExample');
+const processFile = require('./base/processFile');
+const manageExamplesRepo = require('./base/manageExamplesRepo');
+const {
+  createOptionsWindow,
+  createMainWindow,
+  createNewProjectWindow,
+} = require('./base/createWindow');
+
 const app = electron.app;
 const Menu = electron.Menu;
-
-const platform = os.platform() + '_' + os.arch();
-const version = app.getVersion();
+const ipcMain = electron.ipcMain;
+// const autoUpdater = electron.autoUpdater;
+//
+// const platform = `${os.platform()}_${os.arch()}`;
+// const version = app.getVersion();
 
 // autoUpdater.setFeedURL(`http://download.myapp.com/update/${platform}/${version}`);
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
-// prevent window being garbage collected
+// Prevent window being garbage collected
 let mainWindow;
+// These should probably be garbage collected...
 let optionWindow;
+let newProjectWindow;
 
-function onClosed() {
-  // dereference the window
-  // for multiple windows store them in an array
-  mainWindow = null;
-}
+function setupMenu() {
+  // Set up the menu
+  const menuTemplate = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'New',
+          accelerator: 'CmdOrCtrl+N',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.reload();
+          },
+        },
+        {
+          label: 'Preferences',
+          accelerator: 'CmdOrCtrl+,',
+          click() {
+            if (!optionWindow) {
+              optionWindow = createOptionsWindow();
+              optionWindow.on('closed', () => {
+                optionWindow = null;
+              });
+            }
+          },
+        },
+        {
+          role: 'quit',
+        },
+      ],
+    },
+  ];
 
-function createMainWindow() {
-  const win = new electron.BrowserWindow({
-    width: 600,
-    height: 400
-  });
+  const menu = Menu.buildFromTemplate(menuTemplate);
 
-  win.loadURL(`file://${__dirname}/index.html`);
-  win.on('closed', onClosed);
+  Menu.setApplicationMenu(menu);
 
-  return win;
-}
-
-function createOptionsWindow() {
-  const win = new electron.BrowserWindow({
-    width: 400,
-    height: 300,
-    frame: false
-  });
-
-  win.loadURL(`file://${__dirname}/options.html`);
-  win.on('closed', () => {
-    optionWindow = null;
-  });
-
-  return win;
+  return menu;
 }
 
 app.on('window-all-closed', () => {
@@ -59,40 +81,42 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (!mainWindow) {
     mainWindow = createMainWindow();
+    mainWindow.on('closed', () => {
+      mainWindow = null;
+    });
   }
 });
 
 app.on('ready', () => {
-  // Set up the menu
-  const menuTemplate = [
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'New',
-          accelerator: 'CmdOrCtrl+N',
-          click (item, focusedWindow) {
-            if (focusedWindow) focusedWindow.reload();
-          }
-        },
-        {
-          label: 'Preferences',
-          accelerator: 'CmdOrCtrl+,',
-          click (item, focusedWindow) {
-            if (!optionWindow) {
-              optionWindow = createOptionsWindow();
-            }
-          }
-        },
-        {
-          role: 'quit'
-        }
-      ]
-    }
-  ];
-
-  const menu = Menu.buildFromTemplate(menuTemplate);
-
-  Menu.setApplicationMenu(menu);
+  setupMenu();
   mainWindow = createMainWindow();
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+  storage.get('examplePath', (err, data) => {
+    manageExamplesRepo(data, mainWindow);
+  });
 });
+
+ipcMain.on('file-to-process', (evt, file) => {
+  if (!newProjectWindow) {
+    newProjectWindow = createNewProjectWindow();
+    newProjectWindow.on('closed', () => {
+      newProjectWindow = null;
+    });
+  }
+  const { meta, processed, filePath } = processFile(file);
+  newProjectWindow.webContents.on('did-finish-load', () => {
+    // @TODO figure out why I need to do this here...
+    console.dir(processed);
+    // processed.shift();
+    // processed.unshift(meta[0].slice());
+    newProjectWindow.webContents.send('incoming-data', {
+      metadata: meta,
+      path: filePath,
+      processed,
+    });
+  });
+});
+
+ipcMain.on('build-example', buildExample);

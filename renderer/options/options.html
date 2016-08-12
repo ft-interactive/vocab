@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Options</title>
+    <link rel="stylesheet" href="../../photon/dist/css/photon.css">
+    <style type="text/css">
+      form {
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <header class="toolbar toolbar-header">
+        <h1 class="title">Options</h1>
+      </header>
+
+      <div class="window-content">
+        <form>
+          <div class="form-group">
+            <label for="examples-path">Path to graphics-examples repo:</label>
+            <input type="text" id="example-path" name="example-path" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="preferred-editor">Open new projects with editor:</label>
+            <select class="form-control" name="preferred-editor" id="preferred-editor">
+              <option value="default">(system default)</option>
+              <option value="none">(none)</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <footer class="toolbar toolbar-footer">
+        <div class="toolbar-actions">
+          <button class="btn btn-large btn-primary pull-right" id="save">Save</button>
+          <button class="btn btn-large btn-default" id="cancel">Cancel</button>
+        </div>
+      </footer>
+    </div>
+
+    <script src="./options.js"></script>
+  </body>
+</html>

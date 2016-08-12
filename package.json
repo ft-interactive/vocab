@@ -11,8 +11,7 @@
     "url": "ig.ft.com"
   },
   "scripts": {
-    "test": "xo",
-    "start": "electron .",
+    "start": "nodemon -w . --exec electron .",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "files": [
@@ -28,20 +27,21 @@
     "dropzone": "^4.3.0",
     "electron-debug": "^1.0.0",
     "electron-json-storage": "^2.0.0",
+    "handlebars": "^4.0.5",
+    "papaparse": "^4.1.2",
+    "sander": "^0.5.1",
+    "simple-git": "^1.45.0",
     "text-converter": "github:ft-interactive/txtconverter#1.0.3"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^1.3.3",
-    "xo": "^0.15.0"
-  },
-  "xo": {
-    "esnext": true,
-    "spaces": true,
-    "envs": [
-      "node",
-      "browser"
-    ]
+    "electron-prebuilt-compile": "^1.3.2",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.0.0"
   }
 }

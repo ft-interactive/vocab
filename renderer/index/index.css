@@ -1,0 +1,16 @@
+.dropzone-holder {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dropzone {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 2rem;
+  font-weight: lighter;
+  border: 1px solid grey;
+  border-radius: 5px;
+  flex: 1;
+}
