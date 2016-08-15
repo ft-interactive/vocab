@@ -14,3 +14,42 @@
   border-radius: 5px;
   flex: 1;
 }
+
+#messages {
+  margin-left: .5em;
+}
+
+#updates {
+  margin-right: .5em;
+}
+
+.new-update {
+  color: #088CFF;
+  cursor: pointer;
+}
+
+.no-update {
+  color: rgb(158, 212, 153);
+}
+
+
+@keyframes blink {
+  0% {
+      opacity:1;
+  }
+  50% {
+      opacity:0;
+  }
+  100% {
+      opacity:1;
+  }
+}
+
+.blink {
+  transition: all 1s ease-in-out;
+  animation-direction: normal;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: blink;
+  animation-timing-function: ease-in-out;
+}

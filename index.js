@@ -3,12 +3,12 @@
  */
 
 const electron = require('electron');
-// const os = require('os');
 const storage = require('electron-json-storage');
 const buildExample = require('./base/buildExample');
 const processFile = require('./base/processFile');
 const manageExamplesRepo = require('./base/manageExamplesRepo');
 const postBuild = require('./base/postBuild');
+const runAutoUpdate = require('./base/autoUpdate');
 
 const {
   createOptionsWindow,
@@ -20,13 +20,6 @@ const app = electron.app;
 const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
 
-// @TODO add auto-updating
-// const autoUpdater = electron.autoUpdater;
-//
-// const platform = `${os.platform()}_${os.arch()}`;
-// const version = app.getVersion();
-
-// autoUpdater.setFeedURL(`http://download.myapp.com/update/${platform}/${version}`);
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -100,9 +93,12 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
   storage.get('examplePath', (err, data) => {
     manageExamplesRepo(data, mainWindow);
   });
+
+  runAutoUpdate(mainWindow);
 });
 
 ipcMain.on('file-to-process', (evt, file) => {
