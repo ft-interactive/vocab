@@ -1,8 +1,8 @@
 {
   "name": "example-starter",
   "productName": "ExampleStarter",
-  "version": "0.0.0",
-  "description": "My rad app",
+  "version": "1.0.0-beta1",
+  "description": "Rapidly scaffold out graphics-examples projects",
   "license": "MIT",
   "repository": "ft-interactive/example-starter",
   "author": {
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "nodemon -w . --exec electron .",
-    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+    "build": "electron-packager . --out=dist --icon ./Apps-Console.icns --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "files": [
     "index.js",
