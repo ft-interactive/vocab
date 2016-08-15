@@ -24,6 +24,7 @@
     "electron"
   ],
   "dependencies": {
+    "command-exists": "^1.0.2",
     "dropzone": "^4.3.0",
     "electron-debug": "^1.0.0",
     "electron-json-storage": "^2.0.0",

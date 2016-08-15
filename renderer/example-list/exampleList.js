@@ -2,7 +2,7 @@
  * This is the controller for the example-list template
  */
 
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, remote } = require('electron');
 const { getIcon } = require('./getIcon');
 
 (async function buildList() {
@@ -64,7 +64,10 @@ const { getIcon } = require('./getIcon');
 }());
 
 ipcRenderer.on('incoming-data', (evt, data) => {
-  console.dir(data);
+  document.getElementById('cancel').addEventListener('click', () => {
+    remote.getCurrentWindow().close();
+  });
+
   document.getElementById('go').addEventListener('click', () => {
     try {
       const example = document.querySelector('li.list-group-item.active').innerText.trim();
@@ -74,7 +77,39 @@ ipcRenderer.on('incoming-data', (evt, data) => {
           example,
         });
 
-        require('electron').remote.getCurrentWindow().close();
+        ipcRenderer.on('cancelProject', (e, msg) => {
+          const { type, title, message, detail } = msg;
+          remote.dialog.showMessageBox({
+            type,
+            title,
+            message,
+            detail,
+            buttons: [
+              'Okay',
+            ],
+            noLink: true,
+          }, () => {
+            remote.getCurrentWindow().close();
+          });
+        });
+
+        ipcRenderer.on('reload', (e, msg) => {
+          const { type, title, message, detail, path } = msg;
+
+          remote.dialog.showMessageBox({
+            type,
+            title,
+            message,
+            detail,
+            buttons: [
+              'Okay!',
+            ],
+            noLink: true,
+          }, () => {
+            ipcRenderer.send('post-build', path);
+            remote.getCurrentWindow().close();
+          });
+        });
       }
     } catch (e) {
       // @TODO Handle no chart selected here.

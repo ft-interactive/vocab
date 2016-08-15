@@ -8,6 +8,8 @@ const storage = require('electron-json-storage');
 const buildExample = require('./base/buildExample');
 const processFile = require('./base/processFile');
 const manageExamplesRepo = require('./base/manageExamplesRepo');
+const postBuild = require('./base/postBuild');
+
 const {
   createOptionsWindow,
   createMainWindow,
@@ -17,6 +19,8 @@ const {
 const app = electron.app;
 const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
+
+// @TODO add auto-updating
 // const autoUpdater = electron.autoUpdater;
 //
 // const platform = `${os.platform()}_${os.arch()}`;
@@ -72,18 +76,21 @@ function setupMenu() {
   return menu;
 }
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
+function activate() {
   if (!mainWindow) {
     mainWindow = createMainWindow();
     mainWindow.on('closed', () => {
       mainWindow = null;
     });
+  }
+}
+
+app.on('activate', activate);
+ipcMain.on('activate', activate);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
   }
 });
 
@@ -99,18 +106,19 @@ app.on('ready', () => {
 });
 
 ipcMain.on('file-to-process', (evt, file) => {
+  const { meta, processed, filePath } = processFile(file);
+  meta.shift(); // `ipc` irritatingly dedupes messages. See electron/electron#874.
+
   if (!newProjectWindow) {
     newProjectWindow = createNewProjectWindow();
     newProjectWindow.on('closed', () => {
       newProjectWindow = null;
+      activate();
     });
+    mainWindow.close();
   }
-  const { meta, processed, filePath } = processFile(file);
+
   newProjectWindow.webContents.on('did-finish-load', () => {
-    // @TODO figure out why I need to do this here...
-    console.dir(processed);
-    // processed.shift();
-    // processed.unshift(meta[0].slice());
     newProjectWindow.webContents.send('incoming-data', {
       metadata: meta,
       path: filePath,
@@ -120,3 +128,4 @@ ipcMain.on('file-to-process', (evt, file) => {
 });
 
 ipcMain.on('build-example', buildExample);
+ipcMain.on('post-build', postBuild);

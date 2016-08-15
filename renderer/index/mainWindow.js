@@ -11,11 +11,7 @@ Dropzone.options.loadFile = {
   acceptedFiles: '.txt,.tsv',
   init() {
     this.on('complete', file => {
-      try {
-        ipcRenderer.sendSync('file-to-process', file.path);
-      } catch (e) {
-        console.error(e);
-      }
+      ipcRenderer.send('file-to-process', file.path);
     });
   },
 };

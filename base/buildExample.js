@@ -26,6 +26,15 @@ function buildExample(evt, { data, example }) {
     title: 'Choose a directory to save your project...',
   });
 
+  if (!savePath) {
+    evt.sender.send('cancelProject', {
+      type: 'error',
+      title: 'Project cancelled!',
+      message: 'Project cancelled',
+      detail: 'Please select a directory',
+    });
+  }
+
   storage.get('examplePath', async (err, config) => {
     const path = config.path || join(HOME, '.example-starter/', 'graphics-examples/');
     let index;
@@ -38,9 +47,10 @@ function buildExample(evt, { data, example }) {
     }
 
     // Replace defaults with metadata...
-    Object.keys(data.metadata).forEach(key => {
-      const re = new RegExp(`\s*var ${key}\s?=\s?(?:'([^']*)'|"([^"]*)")`); // ZALGO COMETH!
-      index = index.replace(re, data.metadata[key]);
+    data.metadata.forEach(item => {
+      // ZALGO COMETH!
+      const re = new RegExp(`(\\s*(?:var|let) ${item[0]}\\s?=\\s?)(?:'([^']*)'|"([^"]*)")`);
+      index = index.replace(re, `$1'${item[1]}'`);
     });
 
     try {
@@ -50,6 +60,14 @@ function buildExample(evt, { data, example }) {
     } catch (e) {
       console.error(e);
     }
+
+    evt.sender.send('reload', {
+      type: 'info',
+      title: 'Project successful created',
+      message: 'Project successful created',
+      detail: `Project started in ${savePath}`,
+      path: savePath,
+    });
   });
 }
 

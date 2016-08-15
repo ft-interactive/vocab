@@ -11,25 +11,27 @@ const pathEl = document.getElementById('example-path');
 const editorEl = document.getElementById('preferred-editor');
 
 document.getElementById('save').addEventListener('click', () => {
-  storage.set('examplePath', { path: pathEl.value }, (err) => {
-    if (err) throw err;
+  const win = require('electron').remote.getCurrentWindow();
+
+  const example = new Promise((res, rej) => {
+    storage.set('examplePath', { path: pathEl.value }, err => (err ? rej(err) : res()));
   });
 
-  storage.set('preferredEditor', { editor: editorEl.value }, (err) => {
-    if (err) throw err;
+  const editor = new Promise((res, rej) => {
+    storage.set('preferredEditor', { editor: editorEl.value }, err => (err ? rej(err) : res()));
   });
+
+  Promise.all([example, editor]).then(win.close);
 });
 
 document.getElementById('cancel').addEventListener('click', () => {
-  const win = require('electron').remote.getCurrentWindow();
-
-  win.close();
+  require('electron').remote.getCurrentWindow().close();
 });
 
 const EDITORS = new Map();
-EDITORS.set('Sublime Text', 'subl');
-EDITORS.set('Atom', 'atom');
-EDITORS.set('Brackets', 'brackets');
+EDITORS.set('Sublime Text', 'Sublime Text.app');
+EDITORS.set('Atom', 'Atom.app');
+EDITORS.set('Brackets', 'Brackets.app');
 
 EDITORS.forEach((value, key) => {
   const opt = document.createElement('option');
