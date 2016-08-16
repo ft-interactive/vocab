@@ -35,38 +35,29 @@ function buildExample(evt, { data, example }) {
     });
   }
 
-  storage.get('examplePath', async (err, config) => {
+  storage.get('examplePath', (err, config) => {
     const path = config.path || join(HOME, '.example-starter/', 'graphics-examples/');
-    let index;
 
-    try {
-      await copydir(join(path, example)).to(savePath);
-      index = await readFile(join(path, example, 'index.html'), { encoding: 'utf-8' });
-    } catch (e) {
-      console.error(e);
-    }
+    copydir(join(path, example)).to(savePath);
+    readFile(join(path, example, 'index.html'), { encoding: 'usc2' }).then(index => {
+      // Replace defaults with metadata...
+      data.metadata.forEach(item => {
+        // ZALGO COMETH!
+        const re = new RegExp(`(\\s*(?:var|let) ${item[0]}\\s?=\\s?)(?:'([^']*)'|"([^"]*)")`);
+        index = index.replace(re, `$1'${item[1]}'`);
+      });
 
-    // Replace defaults with metadata...
-    data.metadata.forEach(item => {
-      // ZALGO COMETH!
-      const re = new RegExp(`(\\s*(?:var|let) ${item[0]}\\s?=\\s?)(?:'([^']*)'|"([^"]*)")`);
-      index = index.replace(re, `$1'${item[1]}'`);
-    });
+      writeFile(join(savePath, 'index.html'), index, { encoding: 'usc2' });
+      writeFile(join(savePath, `${dataFilename}.csv`), csv, { encoding: 'usc2' });
+      writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta, { encoding: 'usc2' });
 
-    try {
-      await writeFile(join(savePath, 'index.html'), index, { encoding: 'utf-8' });
-      await writeFile(join(savePath, `${dataFilename}.csv`), csv, { encoding: 'utf-8' });
-      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta, { encoding: 'utf-8' });
-    } catch (e) {
-      console.error(e);
-    }
-
-    evt.sender.send('reload', {
-      type: 'info',
-      title: 'Project successful created',
-      message: 'Project successful created',
-      detail: `Project started in ${savePath}`,
-      path: savePath,
+      evt.sender.send('reload', {
+        type: 'info',
+        title: 'Project successful created',
+        message: 'Project successful created',
+        detail: `Project started in ${savePath}`,
+        path: savePath,
+      });
     });
   });
 }

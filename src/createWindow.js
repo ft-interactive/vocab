@@ -11,7 +11,6 @@ function createMainWindow() {
   });
 
   win.loadURL(`file://${__dirname}/renderer/index/index.html`);
-  win.openDevTools();
   return win;
 }
 

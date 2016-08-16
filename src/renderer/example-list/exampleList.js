@@ -5,7 +5,7 @@
 const { ipcRenderer, remote } = require('electron');
 const { getIcon } = require('./getIcon');
 
-(async function buildList() {
+(function buildList() {
   const { readdir, statSync } = require('fs');
   const { join } = require('path');
   const storage = require('electron-json-storage');
@@ -19,22 +19,20 @@ const { getIcon } = require('./getIcon');
     '.git',
   ];
 
-  try {
-    const dirs = await new Promise((res, rej) => {
-      storage.get('examplePath', (err, { path }) => {
-        if (err) rej(err);
-        readdir(path, (error, files) => {
-          if (error) rej(error);
-          else {
-            res(
-              files.filter(file => statSync(
-                join(path, file)
-              ).isDirectory() && !~ignored.indexOf(file)));
-          }
-        });
+  const dirs = new Promise((res, rej) => {
+    storage.get('examplePath', (err, { path }) => {
+      if (err) rej(err);
+      readdir(path, (error, files) => {
+        if (error) rej(error);
+        else {
+          res(
+            files.filter(file => statSync(
+              join(path, file)
+            ).isDirectory() && !~ignored.indexOf(file)));
+        }
       });
     });
-
+  }).then(dirs => {
     const list = document.getElementById('items');
 
     dirs.forEach(dir => {
@@ -50,9 +48,7 @@ const { getIcon } = require('./getIcon');
       el.innerHTML = contents;
       list.appendChild(el);
     });
-  } catch (e) {
-    console.error(e);
-  }
+  });
 
   [...document.querySelectorAll('li.list-group-item')].forEach(el => {
     el.addEventListener('click', () => {
