@@ -6,7 +6,7 @@ function processFile(filePath) {
   const { extractComments, cleanInput } = require('text-converter/lib');
   const read = require('fs').readFileSync;
 
-  const raw = read(filePath, { encoding: 'usc2' });
+  const raw = read(filePath, { encoding: 'ucs2' });
   const meta = extractComments(raw);
   const processed = cleanInput(raw, meta);
 

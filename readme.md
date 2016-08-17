@@ -45,8 +45,10 @@ Builds the app for OS X, Linux, and Windows, using [electron-packager](https://g
 
 MIT © [Ændrew Rininsland](http://ig.ft.com)
 
-Icon from Dr. Slash's [Flat OS X][5] icon pack
+Icon from Dr. Slash's [Flat OS X][9] icon pack
 
 [1]: https://github.com/ft-interactive/graphics-examples
+[2]: https://github.com/ft-interactive/example-starter/releases/latest
+[3]: https://github.com/ft-interactive/example-starter/releases/latest
 [4]: https://github.com/kavanagh/srvlr
 [9]: https://github.com/dr-slash/icons-flat-osx
