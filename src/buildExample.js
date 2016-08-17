@@ -41,7 +41,7 @@ function buildExample(evt, { data, example }) {
 
     try {
       await copydir(join(path, example)).to(savePath);
-      index = await readFile(join(path, example, 'index.html'), { encoding: 'utf-8' });
+      index = await readFile(join(path, example, 'index.html'), { encoding: 'usc2' });
     } catch (e) {
       console.error(e);
     }
@@ -54,9 +54,9 @@ function buildExample(evt, { data, example }) {
     });
 
     try {
-      await writeFile(join(savePath, 'index.html'), index, { encoding: 'utf-8' });
-      await writeFile(join(savePath, `${dataFilename}.csv`), csv, { encoding: 'utf-8' });
-      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta, { encoding: 'utf-8' });
+      await writeFile(join(savePath, 'index.html'), index, { encoding: 'usc2' });
+      await writeFile(join(savePath, `${dataFilename}.csv`), csv, { encoding: 'usc2' });
+      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta, { encoding: 'usc2' });
     } catch (e) {
       console.error(e);
     }

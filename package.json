@@ -23,6 +23,7 @@
   "dependencies": {
     "command-exists": "^1.0.2",
     "dropzone": "^4.3.0",
+    "electron-compile": "^3.3.5",
     "electron-debug": "^1.0.0",
     "electron-is-dev": "^0.1.1",
     "electron-json-storage": "^2.0.0",
@@ -30,10 +31,10 @@
     "papaparse": "^4.1.2",
     "sander": "^0.5.1",
     "simple-git": "^1.45.0",
-    "text-converter": "github:ft-interactive/txtconverter#1.0.3",
-    "electron-compile": "^3.3.5"
+    "text-converter": "github:ft-interactive/txtconverter#1.0.3"
   },
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "devtron": "^1.1.0",
     "electron-compilers": "^3.1.6",
     "electron-packager": "^7.6.0",
