@@ -45,12 +45,11 @@ function postBuild(e, path) {
 
   storage.get('preferredEditor', (err, { editor }) => {
     if (err) throw err;
-    const indexPath = `${path}/index.html`;
 
     try {
       switch (editor) {
         case 'default':
-          spawn('open', [indexPath], {
+          spawn('open', path, {
             detached: true,
             shell: true,
           });
@@ -58,7 +57,7 @@ function postBuild(e, path) {
         case 'none':
           break;
         default:
-          spawn('open', ['-a', editor, indexPath], {
+          spawn('open', ['-a', editor, path], {
             detached: true,
             shell: true,
           });

@@ -31,12 +31,15 @@ function runAutoUpdate(mainWindow) {
       autoUpdater.on('update-not-available', () => {
         mainWindow.webContents.send('no-update');
       });
-    } else {
+    } else if (mainWindow) {
       console.info('in dev mode, simulating update...');
       mainWindow.webContents.send('running-updater');
-      setTimeout(() => {
+
+      const t = setTimeout(() => {
         mainWindow.webContents.send('no-update');
       }, 5000);
+
+      mainWindow.webContents.on('close', () => clearTimeout(t));
     }
   });
 
