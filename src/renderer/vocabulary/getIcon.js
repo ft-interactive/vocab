@@ -1,6 +1,6 @@
 /**
  * This is a terribly hacky lookup table that gives each chart an icon.
- * @TODO add thumbnails to `graphics-examples` and display those instead.
+ * @TODO add thumbnails to `visual-vocabulary` and display those instead.
  */
 
 function getIcon(dir) {

@@ -1,22 +1,22 @@
-# example-starter
-## 2016 Ændrew Rininsland
+# Vocab
+## _Formerly example-starter_
+### 2016 Ændrew Rininsland
 
-Example Starter is a tool to quickly scaffold and populate items from the
-[graphics-examples][1] GitHub repo.
+**Vocab** is a tool to quickly scaffold and populate items from the [Visual Vocabulary][1] GitHub repo.
 
 ## User instructions
 
-1. Download the latest release for your platform.
+1. Download the latest release of **Vocab** for your platform.
   * *[Mac][2]*
   * *[Windows][3]*
-2. Run `example-starter.app` / `example-stater.exe`
+2. Run `vocab.app` / `vocab.exe`
 3. Drag a `.txt` spreadsheet into the interface
-4. Choose a chart type. Example Starter will offer suggestions based on your
-data, but you can choose any chart type in `graphic-examples`.
+4. Choose a chart type. **Vocab** will offer suggestions based on your
+data, but you can choose any chart type in `visual-vocabulary`.
 5. Click "Let's Go!"
 6. Choose a destination folder
-7. Example Starter will copy your data and the example into the chosen directory, start [srvlr][4],
-open your code editor in the appropriate directory and load the example into Chrome.
+7. **Vocab** will copy your data and the example into the chosen directory, start [srvlr][4],
+open your code editor in the appropriate directory and load the project into Chrome.
 8. Start coding!
 
 
@@ -47,8 +47,8 @@ MIT © [Ændrew Rininsland](http://ig.ft.com)
 
 Icon from Dr. Slash's [Flat OS X][9] icon pack
 
-[1]: https://github.com/ft-interactive/graphics-examples
-[2]: https://github.com/ft-interactive/example-starter/releases/latest
-[3]: https://github.com/ft-interactive/example-starter/releases/latest
+[1]: https://github.com/ft-interactive/visual-vocabulary
+[2]: https://github.com/ft-interactive/vocab/releases/latest
+[3]: https://github.com/ft-interactive/vocab/releases/latest
 [4]: https://github.com/kavanagh/srvlr
 [9]: https://github.com/dr-slash/icons-flat-osx

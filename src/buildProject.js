@@ -5,15 +5,19 @@
 const storage = require('electron-json-storage');
 const HOME = require('os').homedir();
 
-function buildExample(evt, { data, example }) {
+function buildProject(evt, { data, project }) {
   const { dialog } = require('electron');
   const { copydir, readFile, writeFile } = require('sander');
   const { join, basename } = require('path');
   const { unparse } = require('papaparse');
 
   const dataFilename = basename(data.path, '.txt');
-  const meta = !data.meta ? '' :
-    data.meta.map(val => (Array.isArray(val) && val.length === 2 ? val.join('\t') : '')).join('\n');
+
+  const meta = !data.metadata ? '' :
+    data.metadata.map(val =>
+      (Array.isArray(val) && val.length === 2 ? val.join('\t') : '')
+    ).join('\n');
+
   let csv;
 
   try {
@@ -35,28 +39,32 @@ function buildExample(evt, { data, example }) {
     });
   }
 
-  storage.get('examplePath', async (err, config) => {
-    const path = config.path || join(HOME, '.example-starter/', 'graphics-examples/');
+  storage.get('vocabPath', async (err, config) => {
+    const path = config.path || join(HOME, '.vocab/', 'visual-vocabulary/');
     let index;
 
     try {
-      await copydir(join(path, example)).to(savePath);
-      index = await readFile(join(path, example, 'index.html'), { encoding: 'ucs2' });
+      await copydir(join(path, project)).to(savePath);
+      index = await readFile(join(path, project, 'index.html'), { encoding: 'utf8' });
     } catch (e) {
       console.error(e);
     }
 
     // Replace defaults with metadata...
-    data.metadata.forEach(item => {
+    data.metadata.forEach(line => {
       // ZALGO COMETH!
-      const re = new RegExp(`(\\s*(?:var|let) ${item[0]}\\s?=\\s?)(?:'([^']*)'|"([^"]*)")`);
-      index = index.replace(re, `$1'${item[1]}'`);
+      // eslint-disable-next-line max-len
+      const reMeta = new RegExp(`^(\\s*(?:var|let|const) ${line[0]}\\s?=\\s?)(["'\`])[^"'\`]+(["'\`]\\s?\\;?)(?:\/\/.*)?$`, 'igm');
+      index = index.replace(reMeta, `$1'${line[1]}';`);
     });
 
+    const reData = /^(\s*(?:var|let|const)\s?dataURL\s?=\s?["'])(?:[^"']*)(["'].*?);?$/igm;
+    index = index.replace(reData, `$1${dataFilename}.csv$2;`);
+
     try {
-      await writeFile(join(savePath, 'index.html'), index, { encoding: 'ucs2' });
-      await writeFile(join(savePath, `${dataFilename}.csv`), csv, { encoding: 'ucs2' });
-      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta, { encoding: 'ucs2' });
+      await writeFile(join(savePath, 'index.html'), index);
+      await writeFile(join(savePath, `${dataFilename}.csv`), csv);
+      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta);
     } catch (e) {
       console.error(e);
     }
@@ -71,4 +79,4 @@ function buildExample(evt, { data, example }) {
   });
 }
 
-module.exports = buildExample;
+module.exports = buildProject;

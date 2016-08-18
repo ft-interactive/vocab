@@ -1,9 +1,18 @@
 /**
- * This is the controller for the example-list template
+ * This is the controller for the vocabulary template
  */
 
 const { ipcRenderer, remote } = require('electron');
 const { getIcon } = require('./getIcon');
+
+function NoProjectError(message) {
+  this.name = 'NoProjectError';
+  this.message = message || 'No project selection';
+  this.stack = (new Error()).stack;
+}
+
+NoProjectError.prototype = Object.create(Error.prototype);
+NoProjectError.prototype.constructor = NoProjectError;
 
 (async function buildList() {
   const { readdir, statSync } = require('fs');
@@ -21,7 +30,7 @@ const { getIcon } = require('./getIcon');
 
   try {
     const dirs = await new Promise((res, rej) => {
-      storage.get('examplePath', (err, { path }) => {
+      storage.get('vocabPath', (err, { path }) => {
         if (err) rej(err);
         readdir(path, (error, files) => {
           if (error) rej(error);
@@ -70,11 +79,11 @@ ipcRenderer.on('incoming-data', (evt, data) => {
 
   document.getElementById('go').addEventListener('click', () => {
     try {
-      const example = document.querySelector('li.list-group-item.active').innerText.trim();
-      if (example) {
-        ipcRenderer.send('build-example', {
+      const project = document.querySelector('li.list-group-item.active');
+      if (project) {
+        ipcRenderer.send('build-project', {
           data,
-          example,
+          project: project.innerText.trim(),
         });
 
         ipcRenderer.on('cancelProject', (e, msg) => {
@@ -110,9 +119,24 @@ ipcRenderer.on('incoming-data', (evt, data) => {
             remote.getCurrentWindow().close();
           });
         });
+      } else {
+        throw new NoProjectError();
       }
     } catch (e) {
-      // @TODO Handle no chart selected here.
+      if (e.name === 'NoProjectError') {
+        remote.dialog.showMessageBox({
+          type: 'error',
+          title: 'Please select a chart',
+          message: 'Choose a chart from the menu to continue.',
+          detail: 'Choose a chart from the menu to continue.',
+          buttons: [
+            'Okay!',
+          ],
+          noLink: true,
+        });
+      } else {
+        console.error(e);
+      }
     }
   });
 });

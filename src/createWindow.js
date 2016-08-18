@@ -33,7 +33,7 @@ function createNewProjectWindow() {
     frame: false,
   });
 
-  win.loadURL(`file://${__dirname}/renderer/example-list/example-list.html`);
+  win.loadURL(`file://${__dirname}/renderer/vocabulary/vocabulary.html`);
 
   return win;
 }

@@ -18,7 +18,7 @@ Dropzone.options.loadFile = {
   },
 };
 
-// graphics-examples repo updater messages
+// visual-vocabulary repo updater messages
 ipcRenderer.on('repo-message', (e, message) => {
   document.getElementById('messages').textContent = message;
 

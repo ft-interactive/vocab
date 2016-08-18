@@ -7,21 +7,21 @@ const storage = require('electron-json-storage');
 const joinPath = require('path').join;
 const HOME = require('os').homedir();
 
-const pathEl = document.getElementById('example-path');
+const pathEl = document.getElementById('vocab-path');
 const editorEl = document.getElementById('preferred-editor');
 
 document.getElementById('save').addEventListener('click', () => {
   const win = require('electron').remote.getCurrentWindow();
 
-  const example = new Promise((res, rej) => {
-    storage.set('examplePath', { path: pathEl.value }, err => (err ? rej(err) : res()));
+  const vocab = new Promise((res, rej) => {
+    storage.set('vocabPath', { path: pathEl.value }, err => (err ? rej(err) : res()));
   });
 
   const editor = new Promise((res, rej) => {
     storage.set('preferredEditor', { editor: editorEl.value }, err => (err ? rej(err) : res()));
   });
 
-  Promise.all([example, editor]).then(win.close);
+  Promise.all([vocab, editor]).then(win.close);
 });
 
 document.getElementById('cancel').addEventListener('click', () => {
@@ -40,11 +40,11 @@ EDITORS.forEach((value, key) => {
   editorEl.appendChild(opt);
 });
 
-storage.get('examplePath', (err, data) => {
+storage.get('vocabPath', (err, data) => {
   if (err) throw err;
 
   if (!data.path) {
-    pathEl.value = joinPath(HOME, '.example-starter/', 'graphics-examples/');
+    pathEl.value = joinPath(HOME, '.vocab/', 'visual-vocabulary/');
   } else {
     pathEl.value = data.path;
   }

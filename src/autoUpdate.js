@@ -15,21 +15,21 @@ function runAutoUpdate(mainWindow) {
   mainWindow.webContents.on('did-finish-load', () => {
     if (!isDev) {
       try {
-        autoUpdater.setFeedURL(`https://ft-ig-examplestarter-updates.herokuapp.com/update/${platform}/${version}`);
+        autoUpdater.setFeedURL(`https://ft-ig-vocab-updates.herokuapp.com/update/${platform}/${version}`);
       } catch (e) {
         console.error(e);
       }
 
       autoUpdater.on('checking-for-update', () => {
-        mainWindow.webContents.send('checking-for-update');
+        if (mainWindow.webContents) mainWindow.webContents.send('checking-for-update');
       });
 
       autoUpdater.on('update-downloaded', () => {
-        mainWindow.webContents.send('new-release');
+        if (mainWindow.webContents) mainWindow.webContents.send('new-release');
       });
 
       autoUpdater.on('update-not-available', () => {
-        mainWindow.webContents.send('no-update');
+        if (mainWindow.webContents) mainWindow.webContents.send('no-update');
       });
     } else if (mainWindow) {
       console.info('in dev mode, simulating update...');

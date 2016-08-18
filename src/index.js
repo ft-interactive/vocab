@@ -1,12 +1,12 @@
 /**
- * Main controller for Example Starter
+ * Main controller for Vocab
  */
 
 const electron = require('electron');
 const storage = require('electron-json-storage');
-const buildExample = require('./buildExample');
+const buildProject = require('./buildProject');
 const processFile = require('./processFile');
-const manageExamplesRepo = require('./manageExamplesRepo');
+const manageVisualVocabularyRepo = require('./manageVisualVocabularyRepo');
 const postBuild = require('./postBuild');
 const runAutoUpdate = require('./autoUpdate');
 
@@ -94,8 +94,8 @@ app.on('ready', () => {
     mainWindow = null;
   });
 
-  storage.get('examplePath', (err, data) => {
-    manageExamplesRepo(data, mainWindow);
+  storage.get('vocabPath', (err, data) => {
+    manageVisualVocabularyRepo(data, mainWindow);
   });
 
   runAutoUpdate(mainWindow);
@@ -123,5 +123,5 @@ ipcMain.on('file-to-process', (evt, file) => {
   });
 });
 
-ipcMain.on('build-example', buildExample);
+ipcMain.on('build-project', buildProject);
 ipcMain.on('post-build', postBuild);
