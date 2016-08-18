@@ -1,7 +1,7 @@
 {
   "name": "vocab",
   "productName": "Vocab",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-rc1",
   "description": "Rapidly scaffold out graphics-examples projects",
   "license": "MIT",
   "repository": "ft-interactive/vocab",
