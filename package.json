@@ -32,7 +32,7 @@
     "papaparse": "^4.1.2",
     "sander": "^0.5.1",
     "simple-git": "^1.45.0",
-    "text-converter": "github:ft-interactive/txtconverter#1.1.0"
+    "text-converter": "github:ft-interactive/text-converter#1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
