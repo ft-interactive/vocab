@@ -55,7 +55,11 @@ function buildProject(evt, { data, project }) {
       // ZALGO COMETH!
       // eslint-disable-next-line max-len
       const reMeta = new RegExp(`^(\\s*(?:var|let|const) ${line[0]}\\s?=\\s?)(["'\`])[^"'\`]+(["'\`]\\s?\\;?)(?:\/\/.*)?$`, 'igm');
-      index = index.replace(reMeta, `$1'${line[1].replace(/'/g, '\\\'')}';`);
+      if (line[0] === 'source') {
+        index = index.replace(reMeta, `$1'${line[1].replace(/'/g, '\\\'')}';`);
+      } else {
+        index = index.replace(reMeta, `$1'Source: ${line[1].replace(/'/g, '\\\'')}';`);
+      }
     });
 
     const reData = /^(\s*(?:var|let|const)\s?dataURL\s?=\s?["'])(?:[^"']*)(["'].*?);?$/igm;
