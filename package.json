@@ -12,8 +12,8 @@
   },
   "scripts": {
     "start": "nodemon -w . --exec electron .",
-    "build-all": "electron-packager-compile . --out=dist --icon ./Apps-Console.icns --app-version=$npm_package_version --version=1.3.2 --prune --asar --overwrite --all",
-    "build": "NODE_ENV='production' electron-packager-compile . --out=dist --osx-sign.identity='Andrew Rininsland' --icon ./Apps-Console.icns --app-version=$npm_package_version --version=1.3.2 --asar --prune --overwrite --platform=darwin --arch=x64",
+    "build-all": "NODE_ENV='production' electron-packager-compile . --out=dist --osx-sign.identity='Developer ID Application: Financial Times Ltd. (CAEDT8EKGV)' --icon ./Apps-Console.icns --app-version=$npm_package_version --version=1.3.2 --prune --asar --overwrite --all",
+    "build": "NODE_ENV='production' electron-packager-compile . --out=dist --icon ./Apps-Console.icns --app-version=$npm_package_version --version=1.3.2 --asar --prune --overwrite --platform=darwin --arch=x64 && codesign --deep --force --verbose --sign 'Developer ID Application: Financial Times Ltd. (CAEDT8EKGV)' dist/Vocab-darwin-x64/Vocab.app",
     "rebuild-binaries": "electron-rebuild"
   },
   "main": "src/index.js",
