@@ -55,10 +55,10 @@ function buildProject(evt, { data, project }) {
       // ZALGO COMETH!
       // eslint-disable-next-line max-len
       const reMeta = new RegExp(`^(\\s*(?:var|let|const) ${line[0]}\\s?=\\s?)(["'\`])[^"'\`]+(["'\`]\\s?\\;?)(?:\/\/.*)?$`, 'igm');
-      if (line[0] === 'source') {
-        index = index.replace(reMeta, `$1'${line[1].replace(/'/g, '\\\'')}';`);
-      } else {
+      if (/source/i.test(line[0])) {
         index = index.replace(reMeta, `$1'Source: ${line[1].replace(/'/g, '\\\'')}';`);
+      } else {
+        index = index.replace(reMeta, `$1'${line[1].replace(/'/g, '\\\'')}';`);
       }
     });
 
