@@ -57,7 +57,7 @@ function postBuild(e, path) {
         case 'none':
           break;
         default:
-          spawn('open', ['-a', editor, path], {
+          spawn('open', ['-a', editor.replace(/\s/g, '\\ '), path], {
             detached: true,
             shell: true,
           });

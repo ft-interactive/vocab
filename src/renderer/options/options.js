@@ -29,8 +29,9 @@ document.getElementById('cancel').addEventListener('click', () => {
 });
 
 const EDITORS = new Map();
-EDITORS.set('Sublime Text', 'Sublime Text.app');
 EDITORS.set('Atom', 'Atom.app');
+EDITORS.set('Sublime Text', 'Sublime Text.app');
+EDITORS.set('Sublime Text 2', 'Sublime Text 2.app');
 EDITORS.set('Brackets', 'Brackets.app');
 
 EDITORS.forEach((value, key) => {
