@@ -50,7 +50,18 @@ function manageVisualVocabularyRepo(data, win) {
 
   // Pull from GitHub
   Git.pull(error => {
-    if (error) console.error(error);
+    if (error) {
+      // This is likely a merge conflict due to weirdness in the Visual Vocab dir
+      if (error.match('overwritten by merge')) {
+        Git.reset('hard', err => {
+          if (err) console.error(err);
+          Git.clean('f', ['-d'], (err2) => {
+            if (err) console.error(err2);
+            else Git.pull(console.error);
+          });
+        });
+      }
+    }
   })
   .then(() => {
     console.info('Update done');
