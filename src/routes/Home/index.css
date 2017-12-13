@@ -1,0 +1,22 @@
+.app__title {
+  font-size: 1.5em;
+}
+
+.app__intro {
+  font-size: large;
+}
+
+.app__main {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.app__aside {
+  flex: 1;
+}
+
+.app__content {
+  flex: 4;
+  display: flex;
+}

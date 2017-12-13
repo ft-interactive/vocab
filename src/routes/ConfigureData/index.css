@@ -1,0 +1,7 @@
+.data-view__container table {
+  width: 100%;
+}
+
+.data-view__container table td, .data-view__container table th {
+  width: 15em;
+}

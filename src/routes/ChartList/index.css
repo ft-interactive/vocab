@@ -1,0 +1,23 @@
+.chart-list__ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chart-list__li {
+  width: 50%;
+  cursor: pointer;
+}
+
+.chart-list__li:hover {
+  background: #ccc;
+}
+
+.chart-list__img {
+  max-width: 100px;
+}
+
+.chart-list__description {
+  margin: 0 auto;
+  max-width: 80%;
+}
