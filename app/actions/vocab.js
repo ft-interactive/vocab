@@ -5,7 +5,7 @@
 import load from '@financial-times/load-data';
 import { push } from 'react-router-redux';
 
-const templates = load('../../templates/docs/chartTypes.csv');
+const templates = load('../templates/docs/chartTypes.csv');
 
 export const LOAD_TEMPLATE_DATA = 'LOAD_TEMPLATE_DATA';
 export const SELECT_CHART_TEMPLATE = 'SELECT_CHART_TEMPLATE';
@@ -38,5 +38,5 @@ export const loadUserData = (files) => (dispatch) =>
 
 export const saveSpreadsheet = (sheetData) => ({
   type: SAVE_SPREADSHEET,
-  sheetData: sheetData
+  sheetData,
 });

@@ -7,9 +7,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectChartTemplate } from '../../redux/actions';
-import { slug } from '../../utils';
-import './index.css';
+import { selectChartTemplate } from '../actions/vocab';
+import { slug } from '../utils';
+import './ChartList.css';
 
 const chartList = ({ templates, onTemplateClick, match }) => (
   <ul className="chart-list__ul">
@@ -19,10 +19,11 @@ const chartList = ({ templates, onTemplateClick, match }) => (
         <Link key={slug(t.chartName)} to="/get-data">
           <li
             onClick={() => onTemplateClick(slug(t.chartName))}
-            className="chart-list__li" key={slug(t.chartName)}
+            className="chart-list__li"
+            key={slug(t.chartName)}
             disabled={t.disabled}
           >
-            <img className="chart-list__img" src={`/templates/docs/icons/${t.img}`} alt="" />
+            <img className="chart-list__img" src={`../templates/docs/icons/${t.img}`} alt="" />
             <h2 className="chart-list__header">{t.chartName}</h2>
             <p className="chart-list__description">
               {t.description}
@@ -32,17 +33,15 @@ const chartList = ({ templates, onTemplateClick, match }) => (
       ))
     }
   </ul>
-)
+);
 
 
 const mapStateToProps = state => ({
   templates: state.vocabApp.templates,
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onTemplateClick: id => dispatch(selectChartTemplate(id))
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  onTemplateClick: id => dispatch(selectChartTemplate(id))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(chartList);

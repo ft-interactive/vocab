@@ -1,0 +1,36 @@
+.app__title {
+  font-size: 1.5em;
+}
+
+.app__intro {
+  font-size: large;
+}
+
+.app__main {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.app__sidebar {
+  flex: 1;
+}
+
+.app__content {
+  flex: 4;
+  display: flex;
+  padding: 0 2em 2em 2em;
+}
+
+.app {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__header {
+  background-color: #222;
+  padding: .75em;
+  color: white;
+}

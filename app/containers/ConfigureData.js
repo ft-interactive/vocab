@@ -8,8 +8,8 @@ import SpreadsheetComponent from 'react-spreadsheet-component';
 import 'react-spreadsheet-component/styles/excel.css';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { saveSpreadsheet } from '../../redux/actions';
-import './index.css';
+import { saveSpreadsheet } from '../actions/vocab';
+import './ConfigureData.css';
 
 const config = {
     // Initial number of row

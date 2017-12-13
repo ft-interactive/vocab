@@ -1,3 +1,5 @@
+// @flow
+
 import {
   LOAD_TEMPLATE_DATA,
   SELECT_CHART_TEMPLATE,
@@ -5,13 +7,43 @@ import {
   SAVE_SPREADSHEET,
 } from '../actions/vocab';
 
-const initialState = {
+export type sheetDataType = {
+  rows: (?string[])[]
+};
+
+export type vocabStateType = {
+  templates: templateType[],
+  selectedTemplate: string | null,
+  userData: string[][],
+  sheetData: ?sheetDataType
+};
+
+export type templateType = {
+  chartName: string,
+  category: string,
+  img: string,
+  avail: string,
+  description: string
+};
+
+type actionType = {
+  +type: string,
+  templates?: templateType[],
+  selectedTemplate?: string,
+  userData?: (?string[])[],
+  sheetData?: sheetDataType
+};
+
+const initialState: vocabStateType = {
   templates: [],
   selectedTemplate: null,
   userData: [],
+  sheetData: {
+    rows: [],
+  },
 };
 
-export default function vocabApp(state = initialState, action) {
+export default function vocabApp(state: vocabStateType = initialState, action: actionType) {
   switch (action.type) {
     case LOAD_TEMPLATE_DATA:
       return {

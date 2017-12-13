@@ -1,7 +1,12 @@
 .dimension-list__unordered-list {
   list-style-type: none;
+  padding: 0;
 }
 
 .dimension-list__list-item {
   list-style-type: none;
+  font-size: 1.5em;
+  text-align: center;
+  border-top: .3em solid;
+  padding: .25em;
 }
