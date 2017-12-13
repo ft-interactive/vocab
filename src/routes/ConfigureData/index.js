@@ -8,8 +8,8 @@ import SpreadsheetComponent from 'react-spreadsheet-component';
 import 'react-spreadsheet-component/styles/excel.css';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { saveSpreadsheet } from '../../redux/actions';
 import './index.css';
-
 
 const config = {
     // Initial number of row
@@ -36,37 +36,67 @@ const config = {
     hasLetterNumberHeads: true
 };
 
-const configureData = ({ userData, selectedTemplate, templates, redirect }) => {
+const configureData = ({
+  userData,
+  selectedTemplate,
+  templates,
+  redirect,
+  saveSpreadsheet,
+}) => {
   // console.log(selectedTemplate, !templates.length, !userData.length, userData)
-  // if (!selectedTemplate || !templates.length || !userData.length) {
-  //   redirect('/');
-  //   return null;
-  // };
-  const data = userData.length ? userData[0] : null;
-  const template = templates.find(() => selectedTemplate);
+  if (!selectedTemplate || !templates.length || !userData.length) {
+    redirect('/');
+    return null;
+  };
 
-  console.dir(template, data);
+  // Grab only the first sheet -- if annotated, pull off the "data" attribute.
+  const data = userData.length && Array.isArray(userData[0])
+    ? userData[0]
+    : userData[0].data
+      ? userData[0].data
+      : null;
+
+  //  @TODO populate columns of template based on types returned by template
+  // const template = templates.find(() => selectedTemplate);
+
+  // console.dir(template, data);
   if (data) {
-    const rows = {
+    const sheetData = {
       rows: data.reduce((acc, cur, idx) => {
-        if (idx === 0) {
-          acc.push(Array(Object.keys(cur).length + 1).fill(''));
-          acc.push(['-', ...Object.keys(cur)]);
+        if (idx === 0) { // Add header row so it displays properly
+          const headerRow = ['-', ...Object.keys(cur)];
+          if (!Object.keys(cur).includes(() => 'annotate')) {
+            headerRow.push('annotate');
+          }
+          if (!Object.keys(cur).includes(() => 'highlight')) {
+            headerRow.push('highlight');
+          }
+          acc.push(headerRow);
+          acc.unshift(Array(headerRow.length).fill(''));
         };
-        return acc.concat([['-', ...Object.values(cur)]]);
+
+        const newRow = ['-', ...Object.values(cur)];
+        newRow.length = acc[0].length;
+
+        return [
+          ...acc,
+          newRow.fill('', Object.values(cur).length + 1),
+        ];
       }, [])
-    }
+    };
+
     return (
       <div className="data-view__container">
-        <h3>Dimensions</h3>
+        {/* <h3>Dimensions</h3>
         <div>
 
-        </div>
+        </div> */}
         <SpreadsheetComponent
-          initialData={rows}
+          initialData={sheetData}
           config={config}
-          spreadsheetId="1"
+          spreadsheetId="spreadsheet-1"
         />
+        <button onClick={() => saveSpreadsheet(sheetData)}>Create bundle</button>
       </div>
     );
   }
@@ -74,10 +104,14 @@ const configureData = ({ userData, selectedTemplate, templates, redirect }) => {
   return null;
 }
 
-export default connect(state => ({
+export default connect(
+  state => ({
   userData: state.vocabApp.userData,
   templates: state.vocabApp.templates,
   selectedTemplate: state.vocabApp.selectedTemplate,
-}), dispatch => ({
-  redirect: (path) => dispatch(push(path)),
-}))(configureData);
+  }),
+  dispatch => ({
+    redirect: (path) => dispatch(push(path)),
+    saveSpreadsheet: (sheetData) => dispatch(saveSpreadsheet(sheetData)),
+  }),
+)(configureData);

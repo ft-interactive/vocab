@@ -6,6 +6,7 @@ import {
   LOAD_TEMPLATE_DATA,
   SELECT_CHART_TEMPLATE,
   LOAD_USER_DATA,
+  SAVE_SPREADSHEET,
 } from './actions';
 
 const initialState = {
@@ -30,6 +31,11 @@ export default function vocabApp(state = initialState, action) {
       return {
         ...state,
         userData: state.userData.concat(action.userData),
+      };
+    case SAVE_SPREADSHEET:
+      return {
+        ...state,
+        sheetData: action.sheetData,
       };
     default:
       return state;
