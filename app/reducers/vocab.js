@@ -4,11 +4,11 @@ import {
   LOAD_TEMPLATE_DATA,
   SELECT_CHART_TEMPLATE,
   LOAD_USER_DATA,
-  SAVE_SPREADSHEET,
+  SAVE_SPREADSHEET
 } from '../actions/vocab';
 
 export type sheetDataType = {
-  rows: (?string[])[]
+  rows: (?(string[]))[]
 };
 
 export type vocabStateType = {
@@ -23,14 +23,15 @@ export type templateType = {
   category: string,
   img: string,
   avail: string,
-  description: string
+  description: string,
+  disabled: ?boolean | void
 };
 
 type actionType = {
   +type: string,
   templates?: templateType[],
   selectedTemplate?: string,
-  userData?: (?string[])[],
+  userData?: (?(string[]))[],
   sheetData?: sheetDataType
 };
 
@@ -39,8 +40,8 @@ const initialState: vocabStateType = {
   selectedTemplate: null,
   userData: [],
   sheetData: {
-    rows: [],
-  },
+    rows: []
+  }
 };
 
 export default function vocabApp(state: vocabStateType = initialState, action: actionType) {
@@ -48,22 +49,22 @@ export default function vocabApp(state: vocabStateType = initialState, action: a
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,
-        templates: state.templates.concat(action.templates),
+        templates: state.templates.concat(action.templates)
       };
     case SELECT_CHART_TEMPLATE:
       return {
         ...state,
-        selectedTemplate: action.selectedTemplate,
+        selectedTemplate: action.selectedTemplate
       };
     case LOAD_USER_DATA:
       return {
         ...state,
-        userData: state.userData.concat(action.userData),
+        userData: state.userData.concat(action.userData)
       };
     case SAVE_SPREADSHEET:
       return {
         ...state,
-        sheetData: action.sheetData,
+        sheetData: action.sheetData
       };
     default:
       return state;

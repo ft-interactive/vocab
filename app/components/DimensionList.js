@@ -8,7 +8,7 @@ import categories from '../../templates/docs/categories';
 import { slug } from '../utils';
 import styles from './DimensionList.css';
 
-export default ({ className }) => (
+export default ({ className }: { className: string }) => (
   <aside className={className}>
     <ul className={styles['dimension-list__unordered-list']}>
       {categories.map(cat => (
@@ -16,7 +16,7 @@ export default ({ className }) => (
           key={slug(cat.category)}
           className={styles['dimension-list__list-item']}
           style={{
-            borderColor: cat.colour,
+            borderColor: cat.colour
           }}
         >
           <Link to={`/choose-your-chart/${slug(cat.category)}`}>{cat.category}</Link>

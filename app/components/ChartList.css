@@ -9,7 +9,12 @@
   cursor: pointer;
 }
 
-.chart-list__li:hover {
+.chart-list__button {
+  background: none;
+  border: none;
+}
+
+.chart-list__button:hover {
   background: #ccc;
 }
 

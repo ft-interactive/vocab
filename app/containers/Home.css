@@ -20,6 +20,7 @@
   flex: 4;
   display: flex;
   padding: 0 2em 2em 2em;
+  overflow: scroll;
 }
 
 .app {
@@ -31,6 +32,6 @@
 
 .app__header {
   background-color: #222;
-  padding: .75em;
+  padding: 0.75em;
   color: white;
 }

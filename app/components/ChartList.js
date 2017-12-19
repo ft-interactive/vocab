@@ -1,43 +1,50 @@
-// @flow
 /**
  * Chart List
  * Displays the chart types
+ * @flow
  */
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import type { Match } from 'react-router-dom';
 import { selectChartTemplate } from '../actions/vocab';
 import { slug } from '../utils';
-import './ChartList.css';
+import styles from './ChartList.css';
+import type { templateType } from '../reducers/vocab';
 
-const chartList = ({ templates, onTemplateClick, match }) => (
-  <ul className="chart-list__ul">
-    {templates
-      .filter(t => slug(t.category) === match.params.dimension)
-      .map(t => (
+type Props = {
+  templates: Array<templateType>,
+  onTemplateClick: (chartName: string) => void,
+  match: Match
+};
+
+const chartList = ({ templates, onTemplateClick, match }: Props) => (
+  <ul className={styles['chart-list__ul']}>
+    {templates.filter(t => slug(t.category) === match.params.dimension).map(t => (
+      <li className={styles['chart-list__li']} key={slug(t.chartName)}>
         <Link key={slug(t.chartName)} to="/get-data">
-          <li
+          <button
             onClick={() => onTemplateClick(slug(t.chartName))}
-            className="chart-list__li"
-            key={slug(t.chartName)}
+            className={styles['chart-list__button']}
             disabled={t.disabled}
           >
-            <img className="chart-list__img" src={`../templates/docs/icons/${t.img}`} alt="" />
-            <h2 className="chart-list__header">{t.chartName}</h2>
-            <p className="chart-list__description">
-              {t.description}
-            </p>
-          </li>
+            <img
+              className={styles['chart-list__img']}
+              src={`../templates/docs/icons/${t.img}`}
+              alt=""
+            />
+            <h2 className={styles['chart-list__header']}>{t.chartName}</h2>
+            <p className={styles['chart-list__description']}>{t.description}</p>
+          </button>
         </Link>
-      ))
-    }
+      </li>
+    ))}
   </ul>
 );
 
-
 const mapStateToProps = state => ({
-  templates: state.vocabApp.templates,
+  templates: state.vocabApp.templates
 });
 
 const mapDispatchToProps = dispatch => ({
