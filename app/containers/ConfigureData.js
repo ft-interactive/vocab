@@ -43,7 +43,7 @@ type Props = {
   selectedTemplate: string,
   templates: templateType[],
   redirect: (path: string) => void,
-  saveSpreadsheet: sheetDataType
+  saveSpreadsheet: (sheets: sheetDataType) => void
 };
 
 const configureData = ({

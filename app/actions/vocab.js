@@ -4,10 +4,18 @@
 
 import Papa from 'papaparse';
 import { push } from 'react-router-redux';
+import { ipcRenderer } from 'electron';
 
-const templates = fetch('../templates/docs/chartTypes.csv')
-  .then(res => res.text())
-  .then(txt => Papa.parse(txt, { header: true }).data);
+// Using IPC directly for this is a bit hacky, should be changed to
+// electron-redux at some point.
+const templates = new Promise((resolve, reject) => {
+  try {
+    const result = Papa.parse(ipcRenderer.sendSync('get-templates'), { header: true });
+    resolve(result.data);
+  } catch (e) {
+    reject(e);
+  }
+});
 
 export const LOAD_TEMPLATE_DATA = 'LOAD_TEMPLATE_DATA';
 export const SELECT_CHART_TEMPLATE = 'SELECT_CHART_TEMPLATE';
@@ -34,15 +42,14 @@ export const loadUserData = files => dispatch =>
   new Promise((resolve, reject) => {
     Papa.parse(files[0], {
       header: false,
-      complete: (err, userData) => {
-        if (err) return reject(err);
-        return resolve(
+      complete: ({ data: userData }) =>
+        resolve(
           dispatch({
             type: LOAD_USER_DATA,
             userData
           })
-        );
-      }
+        ),
+      error: err => reject(err)
     });
   }).then(() => dispatch(push('/configure-data')));
 
