@@ -8,8 +8,8 @@ import SpreadsheetComponent from 'react-spreadsheet-component';
 import 'react-spreadsheet-component/styles/excel.css';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { saveSpreadsheet as saveSpreadsheetAction } from '../actions/vocab';
-import type { sheetDataType, templateType } from '../reducers/vocab';
+import { saveSpreadsheet as saveSpreadsheetAction } from '../../shared/actions/vocab';
+import type { sheetDataType, templateType } from '../../shared/reducers/vocab';
 import './ConfigureData.css';
 
 const config = {

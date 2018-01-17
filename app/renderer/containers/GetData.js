@@ -7,7 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Dropzone from 'react-dropzone';
-import { loadUserData } from '../actions/vocab';
+import { loadUserData } from '../../shared/actions/vocab';
 import styles from './GetData.css';
 
 type Props = {

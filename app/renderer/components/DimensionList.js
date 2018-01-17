@@ -2,10 +2,11 @@
 /**
  * Side-bar container for Visual Vocabulary dimensions
  */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import categories from '../../templates/docs/categories';
-import { slug } from '../utils';
+import categories from '../../../templates/docs/categories';
+import { slug } from '../../shared/utils';
 import styles from './DimensionList.css';
 
 export default ({ className }: { className: string }) => (

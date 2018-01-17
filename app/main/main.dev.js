@@ -6,15 +6,15 @@
  * through IPC.
  *
  * When running `npm run build` or `npm run build-main`, this file is compiled to
- * `./app/main.prod.js` using webpack. This gives us some performance wins.
+ * `./app/main/main.prod.js` using webpack. This gives us some performance wins.
  *
  * @flow
  */
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { readFileSync } from 'fs';
 import MenuBuilder from './menu';
-import runAutoUpdate from './auto-update';
-import syncVVTRepo from './manage-vvt-repo';
+// import runAutoUpdate from './auto-update';
+// import syncVVTRepo from './manage-vvt-repo';
 
 let mainWindow = null;
 
@@ -45,7 +45,7 @@ const installExtensions = async () => {
  */
 
 ipcMain.on('get-templates', event => {
-  event.returnValue = readFileSync('templates/docs/chartTypes.csv', 'utf-8'); // eslint-disable-line no-param-reassign
+  event.returnValue = readFileSync(`${__dirname}/../../templates/docs/chartTypes.csv`, 'utf-8'); // eslint-disable-line no-param-reassign
 });
 
 app.on('window-all-closed', () => {
@@ -67,14 +67,14 @@ app.on('ready', async () => {
     height: 728
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
-  try {
-    await syncVVTRepo(mainWindow);
-  } catch (e) {
-    console.error('Error synchronising VVT repo');
-  }
-
-  runAutoUpdate(mainWindow);
+  mainWindow.loadURL(`file://${__dirname}/../renderer/app.html`);
+  // try {
+  //   await syncVVTRepo(mainWindow);
+  // } catch (e) {
+  //   console.error('Error synchronising VVT repo');
+  // }
+  //
+  // runAutoUpdate(mainWindow);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

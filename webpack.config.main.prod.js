@@ -16,12 +16,12 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-main',
 
-  entry: './app/main.dev',
+  entry: './app/main/main.dev',
 
   // 'main.js' in root
   output: {
     path: __dirname,
-    filename: './app/main.prod.js'
+    filename: './app/main/main.prod.js'
   },
 
   plugins: [
@@ -58,5 +58,5 @@ export default merge.smart(baseConfig, {
   node: {
     __dirname: false,
     __filename: false
-  },
+  }
 });
