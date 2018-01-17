@@ -188,6 +188,7 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "command-exists": "^1.2.2",
     "d3": "^4.12.0",
     "devtron": "^1.4.0",
     "electron-debug": "^1.2.0",
@@ -206,6 +207,7 @@
     "react-spreadsheet-component": "^1.0.2",
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
+    "simple-git": "^1.85.0",
     "source-map-support": "^0.4.15"
   },
   "devEngines": {

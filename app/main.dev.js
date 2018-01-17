@@ -13,23 +13,25 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { readFileSync } from 'fs';
 import MenuBuilder from './menu';
+import runAutoUpdate from './auto-update';
+import syncVVTRepo from './manage-vvt-repo';
 
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
+  const sourceMapSupport = require('source-map-support'); // eslint-disable-line global-require
   sourceMapSupport.install();
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
-  const path = require('path');
+  require('electron-debug')(); // eslint-disable-line global-require
+  const path = require('path'); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules');
-  require('module').globalPaths.push(p);
+  require('module').globalPaths.push(p); // eslint-disable-line global-require
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
+  const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
@@ -66,6 +68,13 @@ app.on('ready', async () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
+  try {
+    await syncVVTRepo(mainWindow);
+  } catch (e) {
+    console.error('Error synchronising VVT repo');
+  }
+
+  runAutoUpdate(mainWindow);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
