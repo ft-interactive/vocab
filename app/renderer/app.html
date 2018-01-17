@@ -35,7 +35,12 @@
       : './dist/renderer.prod.js'
   );
 
-  document.write(scripts.map(script => `<script defer src="${script}"></script>`).join(''));
+  // CRUCIAL: Prettier rewrites this incorrectly. Thus is disabled for this file.
+  document.write(
+    scripts
+      .map(script => '<script defer src="' + script + '"><\/script>')
+      .join('')
+  );
 }
 </script>
   </body>

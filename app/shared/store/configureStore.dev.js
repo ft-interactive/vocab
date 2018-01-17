@@ -3,6 +3,13 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
+import {
+  forwardToMain,
+  forwardToRenderer,
+  triggerAlias,
+  replayActionMain,
+  replayActionRenderer
+} from 'electron-redux';
 import rootReducer from '../reducers';
 import * as vocabActions from '../actions/vocab';
 import type { vocabStateType } from '../reducers/vocab';

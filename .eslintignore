@@ -37,12 +37,12 @@ flow-typed/npm/*
 
 # App packaged
 release
-app/main.prod.js
-app/main.prod.js.map
-app/renderer.prod.js
-app/renderer.prod.js.map
-app/style.css
-app/style.css.map
+app/main/main.prod.js
+app/main/main.prod.js.map
+app/renderer/renderer.prod.js
+app/renderer/renderer.prod.js.map
+app/renderer/style.css
+app/renderer/style.css.map
 dist
 dll
 main.js
@@ -52,5 +52,9 @@ main.js.map
 npm-debug.log.*
 __snapshots__
 
+# VVT
 templates
 templates/*
+
+# Prettier breaks these files
+app/renderer/index.html

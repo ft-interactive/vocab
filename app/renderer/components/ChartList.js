@@ -31,7 +31,7 @@ const chartList = ({ templates, onTemplateClick, match }: Props) => (
           >
             <img
               className={styles['chart-list__img']}
-              src={`../templates/docs/icons/${t.img}`}
+              src={`../../templates/docs/icons/${t.img}`}
               alt=""
             />
             <h2 className={styles['chart-list__header']}>{t.chartName}</h2>
