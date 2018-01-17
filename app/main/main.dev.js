@@ -10,9 +10,11 @@
  *
  * @flow
  */
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { readFileSync } from 'fs';
+import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
+import templatesPromise from './load-templates';
+import configureStore from '../shared/store/configureStore';
+import { loadTemplateData } from '../shared/actions/vocab';
 // import runAutoUpdate from './auto-update';
 // import syncVVTRepo from './manage-vvt-repo';
 
@@ -40,25 +42,41 @@ const installExtensions = async () => {
   ).catch(console.log);
 };
 
-/**
- * Add event listeners...
- */
+async function start() {
+  const { store } = configureStore(global.state, 'main');
 
-ipcMain.on('get-templates', event => {
-  event.returnValue = readFileSync(`${__dirname}/../../templates/docs/chartTypes.csv`, 'utf-8'); // eslint-disable-line no-param-reassign
-});
-
-app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
+  try {
+    const templates = await templatesPromise;
+    store.dispatch(loadTemplateData(templates));
+  } catch (e) {
+    console.error(e);
   }
-});
+
+  // try {
+  //   await syncVVTRepo(mainWindow, store);
+  // } catch (e) {
+  //   console.error('Error synchronising VVT repo');
+  // }
+  //
+  // runAutoUpdate(mainWindow, store);
+
+  app.on('window-all-closed', () => {
+    // Respect the OSX convention of having the application in memory even
+    // after all windows have been closed
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+}
 
 app.on('ready', async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+  try {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+      await installExtensions();
+    }
+    await start();
+  } catch (e) {
+    console.error(e);
   }
 
   mainWindow = new BrowserWindow({
@@ -68,13 +86,6 @@ app.on('ready', async () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/../renderer/app.html`);
-  // try {
-  //   await syncVVTRepo(mainWindow);
-  // } catch (e) {
-  //   console.error('Error synchronising VVT repo');
-  // }
-  //
-  // runAutoUpdate(mainWindow);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

@@ -1,15 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { getInitialStateRenderer } from 'electron-redux';
 import Root from './containers/Root';
-import { configureStore, history } from '../shared/store/configureStore';
-import { loadTemplateData } from '../shared/actions/vocab';
+import configureStore from '../shared/store/configureStore';
 import './app.global.css';
 
-const store = configureStore();
+const initialState = getInitialStateRenderer();
+const { store, history } = configureStore(initialState, 'renderer');
 
 (async () => {
-  await store.dispatch(loadTemplateData());
   render(
     <AppContainer>
       <Root store={store} history={history} />

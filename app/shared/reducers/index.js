@@ -1,11 +1,19 @@
 // @flow
 import { combineReducers } from 'redux';
-import { routerReducer as router } from 'react-router-redux';
+import { routerReducer as routing } from 'react-router-redux';
 import vocabApp from './vocab';
 
-const rootReducer = combineReducers({
-  vocabApp,
-  router,
-});
+export default function getRootReducer(scope: string = 'main') {
+  let reducers = {
+    vocabApp
+  };
 
-export default rootReducer;
+  if (scope === 'renderer') {
+    reducers = {
+      ...reducers,
+      routing
+    };
+  }
+
+  return combineReducers({ ...reducers });
+}

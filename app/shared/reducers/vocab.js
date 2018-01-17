@@ -29,7 +29,7 @@ export type templateType = {
 
 type actionType = {
   +type: string,
-  templates?: templateType[],
+  payload?: any,
   selectedTemplate?: string,
   userData?: (?(string[]))[],
   sheetData?: sheetDataType
@@ -49,7 +49,7 @@ export default function vocabApp(state: vocabStateType = initialState, action: a
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,
-        templates: state.templates.concat(action.templates)
+        templates: state.templates.concat(action.payload)
       };
     case SELECT_CHART_TEMPLATE:
       return {
