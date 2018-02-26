@@ -4,11 +4,14 @@
 
 import { push } from 'react-router-redux';
 import { createAliasedAction } from 'electron-redux';
+import Papa from 'papaparse';
+import buildProjectMain from '../../main/build-project';
 
 export const LOAD_TEMPLATE_DATA = 'LOAD_TEMPLATE_DATA';
 export const SELECT_CHART_TEMPLATE = 'SELECT_CHART_TEMPLATE';
 export const LOAD_USER_DATA = 'LOAD_USER_DATA';
 export const SAVE_SPREADSHEET = 'SAVE_SPREADSHEET';
+export const BUILD_PROJECT = 'BUILD_PROJECT';
 
 export const loadTemplateData = createAliasedAction(LOAD_TEMPLATE_DATA, templates => ({
   type: LOAD_TEMPLATE_DATA,
@@ -20,23 +23,40 @@ export const selectChartTemplate = templateName => ({
   selectedTemplate: templateName
 });
 
-// export const loadUserData = createAliasedAction(LOAD_USER_DATA, files => ({
-//   type: LOAD_USER_DATA,
-//   payload: new Promise((resolve, reject) => {
-//     Papa.parse(files[0], {
-//       header: false,
-//       complete: ({ data: userData }) => resolve(userData),
-//       error: err => reject(err)
-//     });
-//   })
-//   // I don't know how this will work here...
-//   // .then(data => {
-//   //   push('/configure-data');
-//   //   return data;
-//   // })
-// }));
+export const loadUserData = files => dispatch =>
+  new Promise((resolve, reject) => {
+    Papa.parse(files[0], {
+      header: false,
+      complete: ({ data: userData }) => resolve(userData),
+      error: err => reject(err)
+    });
+  })
+    .then(result =>
+      dispatch({
+        type: LOAD_USER_DATA,
+        userData: result
+      })
+    )
+    .then(() => dispatch(push('/configure-data')));
 
-export const saveSpreadsheet = sheetData => ({
-  type: SAVE_SPREADSHEET,
-  sheetData
+export const saveSpreadsheet = (selectedTemplate, sheetData) => dispatch =>
+  Promise.resolve(
+    dispatch({
+      type: SAVE_SPREADSHEET,
+      sheetData
+    })
+  )
+    .then(dispatch(buildProject(selectedTemplate, sheetData)))
+    .catch(e => console.error(e));
+
+export const buildProject = createAliasedAction(BUILD_PROJECT, (chartType, spreadsheetData) => {
+  try {
+    const payload = buildProjectMain(chartType, spreadsheetData);
+    return ({
+      type: BUILD_PROJECT,
+      payload,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 });

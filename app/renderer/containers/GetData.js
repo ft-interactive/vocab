@@ -28,6 +28,9 @@ const dropped = ({ onDrop, selectedTemplate, redirect }: Props) => {
         <div className={styles['get-data__dropzone--header-big']}>drag your data file here</div>
         <div className={styles['get-data__dropzone--header-small']}>(or click to browse)</div>
       </Dropzone>
+      <button className={styles['get-data__back-button']} onClick={() => redirect('/')}>
+        Go back
+      </button>
     </section>
   );
 };

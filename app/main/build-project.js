@@ -2,89 +2,26 @@
  * This does the heavy lifting once the app starts copying charts over.
  */
 
-import { homedir } from 'os';
 import { dialog } from 'electron';
-// import { copydir, readFile, writeFile } from 'sander';
-import { join, basename } from 'path';
+import { copy, outputFile } from 'fs-extra';
+import { join } from 'path';
 import { unparse } from 'papaparse';
 
-const HOME = homedir();
-
-function buildProject(evt, { data, project }) {
-  const dataFilename = basename(data.path, '.txt');
-
-  const meta = !data.metadata
-    ? ''
-    : data.metadata
-      .map(val => (Array.isArray(val) && val.length === 2 ? val.join('\t') : ''))
-      .join('\n');
-
-  let csv;
-
+export default async function buildProject(templateData, spreadsheetData) {
   try {
-    csv = unparse(data.processed, { quotes: true });
+    const csvData = unparse(spreadsheetData, { quotes: true });
+    const savePath = dialog.showSaveDialog({
+      title: 'Choose a directory to save your project...'
+    });
+
+    const templatePath = join(__dirname, '..', '..', 'templates');
+
+    await copy(join(templatePath, templateData.templatePath), savePath);
+    await outputFile(join(savePath, 'data.csv'), csvData);
+
+    return savePath;
   } catch (e) {
     console.error(e);
+    // @TODO Handle errors here more elegantly
   }
-
-  const savePath = dialog.showSaveDialog({
-    title: 'Choose a directory to save your project...'
-  });
-
-  if (!savePath) {
-    evt.sender.send('cancelProject', {
-      type: 'error',
-      title: 'Project cancelled!',
-      message: 'Project cancelled',
-      detail: 'Please select a directory'
-    });
-  }
-
-  storage.get('vocabPath', async (err, config) => {
-    const path = config.path || join(HOME, '.vocab/', 'visual-vocabulary/');
-    let index;
-
-    try {
-      await copydir(join(path, project)).to(savePath);
-      index = await readFile(join(path, project, 'index.html'), { encoding: 'utf8' });
-    } catch (e) {
-      console.error(e);
-    }
-
-    // Replace defaults with metadata...
-    data.metadata.forEach(line => {
-      // ZALGO COMETH!
-      // eslint-disable-next-line max-len
-      const reMeta = new RegExp(
-        `^(\\s*(?:var|let|const) ${line[0]}\\s?=\\s?)(["'\`])[^"'\`]+(["'\`]\\s?\\;?)(?:\/\/.*)?$`,
-        'igm'
-      );
-      if (/source/i.test(line[0])) {
-        index = index.replace(reMeta, `$1'Source: ${line[1].replace(/'/g, "\\'")}';`);
-      } else {
-        index = index.replace(reMeta, `$1'${line[1].replace(/'/g, "\\'")}';`);
-      }
-    });
-
-    const reData = /^(\s*(?:var|let|const)\s?dataURL\s?=\s?["'])(?:[^"']*)(["'].*?);?$/gim;
-    index = index.replace(reData, `$1${dataFilename}.csv$2;`);
-
-    try {
-      await writeFile(join(savePath, 'index.html'), index);
-      await writeFile(join(savePath, `${dataFilename}.csv`), csv);
-      await writeFile(join(savePath, `${dataFilename}.meta.tsv`), meta);
-    } catch (e) {
-      console.error(e);
-    }
-
-    evt.sender.send('reload', {
-      type: 'info',
-      title: 'Project successful created',
-      message: 'Project successful created',
-      detail: `Project started in ${savePath}`,
-      path: savePath
-    });
-  });
 }
-
-module.exports = buildProject;

@@ -17,13 +17,19 @@
 }
 
 .get-data__dropzone--header-big {
-  font-family: 'Helvetica Neue';
+  font-family: "Helvetica Neue";
   font-weight: lighter;
   font-size: 5em;
 }
 
 .get-data__dropzone--header-small {
-  font-family: 'Helvetica Neue';
+  font-family: "Helvetica Neue";
   font-weight: lighter;
   font-size: 2.5em;
+}
+
+.get-data__back-button {
+  font-size: 2em;
+  border: 0;
+  background: rgba(255, 255, 255, 0.7);
 }

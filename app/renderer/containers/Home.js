@@ -1,6 +1,8 @@
-// @flow
 /**
+ * @file
  * Home page informational page
+ *
+ * @flow
  */
 
 import React from 'react';
@@ -19,8 +21,7 @@ export default () => (
           path="/"
           component={() => (
             <div>
-              <h1>Welcome to Vocab</h1>
-              <h2>Your shiny-happy Visual Vocabulary scaffolder!</h2>
+              <h1>Welcome to Vocab <sub>v2</sub></h1>
               <p>
                 Please select the dimensions of your data you wish to depict from the sidebar on the
                 left.

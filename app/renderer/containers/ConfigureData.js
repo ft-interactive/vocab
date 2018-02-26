@@ -59,6 +59,8 @@ const configureData = ({
     return null;
   }
 
+  const selectedTemplateData = templates.find(d => d.chartName === selectedTemplate);
+
   // Grab only the first sheet -- if annotated, pull off the "data" attribute.
   const data =
     userData.length && Array.isArray(userData[0]) // eslint-disable-line no-nested-ternary
@@ -103,7 +105,7 @@ const configureData = ({
           config={config}
           spreadsheetId="spreadsheet-1"
         />
-        <button onClick={() => saveSpreadsheet(sheetData)}>Create bundle</button>
+        <button onClick={() => saveSpreadsheet(selectedTemplateData, sheetData)}>Create bundle</button>
       </div>
     );
   }
@@ -119,6 +121,10 @@ export default connect(
   }),
   dispatch => ({
     redirect: path => dispatch(push(path)),
-    saveSpreadsheet: sheetData => dispatch(saveSpreadsheetAction(sheetData))
+    saveSpreadsheet: (selectedTemplate, sheetData) =>
+      dispatch(saveSpreadsheetAction(selectedTemplate, sheetData))
+      .then(() => {
+        dispatch
+      });
   })
 )(configureData);

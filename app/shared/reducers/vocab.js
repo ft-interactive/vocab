@@ -49,7 +49,7 @@ export default function vocabApp(state: vocabStateType = initialState, action: a
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,
-        templates: state.templates.concat(action.payload)
+        templates: state.templates.concat(action.payload).filter(d => d && d.chartName !== '')
       };
     case SELECT_CHART_TEMPLATE:
       return {

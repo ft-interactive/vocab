@@ -14,8 +14,13 @@
   border: none;
 }
 
-.chart-list__button:hover {
+.chart-list__button:not(.chart-list__button--disabled):hover {
   background: #ccc;
+}
+
+.chart-list__button--disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
 .chart-list__img {
@@ -25,4 +30,12 @@
 .chart-list__description {
   margin: 0 auto;
   max-width: 80%;
+  color: white;
+  font-weight: lighter;
+  font-size: 1em;
+}
+
+.chart-list__header {
+  text-align: center;
+  width: 100%;
 }
