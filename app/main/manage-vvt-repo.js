@@ -5,15 +5,17 @@
  */
 
 import simpleGit from 'simple-git';
-import type { BrowserWindow } from 'electron';
+import type { Store } from 'redux';
+import { syncRepo } from '../shared/actions/vocab';
 
-export default async function syncVVTRepo(win: BrowserWindow) {
-  const path = 'templates/';
+export default async function syncVVTRepo(store: Store<*, *, *>) {
+  const path = `${__dirname}/templates/`;
   const Git = simpleGit(path);
-
-  win.webContents.send('repo-message', 'visual-vocabulary-templates repo updating...');
-
-  await Git.submoduleUpdate(['recursive']);
-  console.info('Update done');
-  if (win.webConents) win.webContents.send('repo-message', 'Repo update complete.');
+  try {
+    await Git.submoduleUpdate(['recursive']);
+    store.dispatch(syncRepo(true));
+  } catch (e) {
+    console.error(e);
+    store.dispatch(syncRepo(false));
+  }
 }

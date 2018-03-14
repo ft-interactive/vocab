@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import categories from '../../../templates/docs/categories';
+import categories from '../../../templates/docs/categories'; // eslint-disable-line
 import { slug } from '../../shared/utils';
 import styles from './DimensionList.css';
 

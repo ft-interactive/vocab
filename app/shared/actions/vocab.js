@@ -6,12 +6,20 @@ import { push } from 'react-router-redux';
 import { createAliasedAction } from 'electron-redux';
 import Papa from 'papaparse';
 import buildProjectMain from '../../main/build-project';
+import postBuild from '../../main/post-build';
 
 export const LOAD_TEMPLATE_DATA = 'LOAD_TEMPLATE_DATA';
 export const SELECT_CHART_TEMPLATE = 'SELECT_CHART_TEMPLATE';
 export const LOAD_USER_DATA = 'LOAD_USER_DATA';
 export const SAVE_SPREADSHEET = 'SAVE_SPREADSHEET';
 export const BUILD_PROJECT = 'BUILD_PROJECT';
+export const POST_BUILD_PROJECT = 'POST_BUILD_PROJECT';
+export const SYNC_REPO = 'SYNC_REPO';
+
+export const syncRepo = createAliasedAction(SYNC_REPO, status => ({
+  type: SYNC_REPO,
+  payload: status
+}));
 
 export const loadTemplateData = createAliasedAction(LOAD_TEMPLATE_DATA, templates => ({
   type: LOAD_TEMPLATE_DATA,
@@ -46,17 +54,19 @@ export const saveSpreadsheet = (selectedTemplate, sheetData) => dispatch =>
       sheetData
     })
   )
-    .then(dispatch(buildProject(selectedTemplate, sheetData)))
-    .catch(e => console.error(e));
+    .then(() => dispatch(buildProject(selectedTemplate, sheetData)))
+    .catch(console.error);
 
-export const buildProject = createAliasedAction(BUILD_PROJECT, (chartType, spreadsheetData) => {
-  try {
-    const payload = buildProjectMain(chartType, spreadsheetData);
-    return ({
-      type: BUILD_PROJECT,
-      payload,
-    });
-  } catch (e) {
-    console.error(e);
-  }
-});
+export const buildProject = createAliasedAction(
+  BUILD_PROJECT,
+  (chartType, spreadsheetData) => dispatch =>
+    buildProjectMain(chartType, spreadsheetData)
+      .then(postBuild)
+      .then(payload =>
+        dispatch({
+          type: BUILD_PROJECT,
+          payload
+        })
+      )
+      .then(() => dispatch(push('/')))
+);

@@ -9,6 +9,7 @@
     "browser": true,
     "node": true
   },
+  "root": true,
   "rules": {
     "arrow-parens": ["off"],
     "compat/compat": "error",

@@ -14,7 +14,7 @@ export default () => (
       <Route exact path="/get-data" component={GetData} />
       <Route exact path="/configure-data" component={ConfigureData} />
       <Route exact path="/download" />
-      <Route path="/" component={Home} />
+      <Route default path="/" component={Home} />
     </Switch>
   </App>
 );

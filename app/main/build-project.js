@@ -18,7 +18,7 @@ export default async function buildProject(templateData, spreadsheetData) {
 
     await copy(join(templatePath, templateData.templatePath), savePath);
     await outputFile(join(savePath, 'data.csv'), csvData);
-
+    console.log(`Saving to: ${savePath}`);
     return savePath;
   } catch (e) {
     console.error(e);

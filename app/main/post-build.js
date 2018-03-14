@@ -3,9 +3,9 @@
  */
 
 import { spawn } from 'child_process';
-import * as exists from 'command-exists';
+import exists from 'command-exists';
 
-export default function postBuild(e, path) {
+export default function postBuild(path) {
   try {
     exists('srvlr', (err, srvlr) => {
       if (srvlr) {
@@ -50,28 +50,30 @@ export default function postBuild(e, path) {
     console.error(err);
   }
 
-  storage.get('preferredEditor', (err, { editor }) => {
-    if (err) throw err;
-
-    try {
-      switch (editor) {
-        case 'default':
-          spawn('open', path, {
-            detached: true,
-            shell: true
-          });
-          break;
-        case 'none':
-          break;
-        default:
-          spawn('open', ['-a', editor.replace(/\s/g, '\\ '), path], {
-            detached: true,
-            shell: true
-          });
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // @TODO enable method for launching editor (needs a settings panel)
+  // storage.get('preferredEditor', (err, { editor }) => {
+  //   if (err) throw err;
+  //
+  //   try {
+  //     switch (editor) {
+  //       case 'default':
+  //         spawn('open', path, {
+  //           detached: true,
+  //           shell: true
+  //         });
+  //         break;
+  //       case 'none':
+  //         break;
+  //       default:
+  //         spawn('open', ['-a', editor.replace(/\s/g, '\\ '), path], {
+  //           detached: true,
+  //           shell: true
+  //         });
+  //         break;
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
+  return path;
 }

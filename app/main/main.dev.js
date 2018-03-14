@@ -16,7 +16,7 @@ import templatesPromise from './load-templates';
 import configureStore from '../shared/store/configureStore';
 import { loadTemplateData } from '../shared/actions/vocab';
 // import runAutoUpdate from './auto-update';
-// import syncVVTRepo from './manage-vvt-repo';
+import syncVVTRepo from './manage-vvt-repo';
 
 let mainWindow = null;
 
@@ -52,12 +52,13 @@ async function start() {
     console.error(e);
   }
 
-  // try {
-  //   await syncVVTRepo(mainWindow, store);
-  // } catch (e) {
-  //   console.error('Error synchronising VVT repo');
-  // }
-  //
+  try {
+    await syncVVTRepo(store);
+  } catch (e) {
+    console.dir(e);
+    console.error('Error synchronising VVT repo');
+  }
+
   // runAutoUpdate(mainWindow, store);
 
   app.on('window-all-closed', () => {

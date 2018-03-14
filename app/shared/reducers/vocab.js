@@ -4,7 +4,8 @@ import {
   LOAD_TEMPLATE_DATA,
   SELECT_CHART_TEMPLATE,
   LOAD_USER_DATA,
-  SAVE_SPREADSHEET
+  SAVE_SPREADSHEET,
+  SYNC_REPO
 } from '../actions/vocab';
 
 export type sheetDataType = {
@@ -46,6 +47,11 @@ const initialState: vocabStateType = {
 
 export default function vocabApp(state: vocabStateType = initialState, action: actionType) {
   switch (action.type) {
+    case SYNC_REPO:
+      return {
+        ...state,
+        repoUpdated: action.payload
+      };
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,

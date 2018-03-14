@@ -105,7 +105,9 @@ const configureData = ({
           config={config}
           spreadsheetId="spreadsheet-1"
         />
-        <button onClick={() => saveSpreadsheet(selectedTemplateData, sheetData)}>Create bundle</button>
+        <button onClick={() => saveSpreadsheet(selectedTemplateData, sheetData)}>
+          Create bundle
+        </button>
       </div>
     );
   }
@@ -123,8 +125,5 @@ export default connect(
     redirect: path => dispatch(push(path)),
     saveSpreadsheet: (selectedTemplate, sheetData) =>
       dispatch(saveSpreadsheetAction(selectedTemplate, sheetData))
-      .then(() => {
-        dispatch
-      });
   })
 )(configureData);

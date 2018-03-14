@@ -9,6 +9,7 @@
 <PROJECT_ROOT>/release/.*
 <PROJECT_ROOT>/git/.*
 <PROJECT_ROOT>/templates/*
+<PROJECT_ROOT>/templates/docs/*
 [include]
 
 [libs]
