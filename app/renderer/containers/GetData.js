@@ -7,7 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Dropzone from 'react-dropzone';
-import { loadUserData } from '../../shared/actions/vocab';
+import { loadUserData } from '../../shared/actions';
 import styles from './GetData.css';
 
 type Props = {
@@ -24,7 +24,10 @@ const dropped = ({ onDrop, selectedTemplate, redirect }: Props) => {
 
   return (
     <section className={styles['get-data__wrapper']}>
-      <Dropzone className={styles['get-data__dropzone']} onDrop={onDrop}>
+      <Dropzone
+        className={styles['get-data__dropzone']}
+        onDrop={files => onDrop(files, selectedTemplate)}
+      >
         <div className={styles['get-data__dropzone--header-big']}>drag your data file here</div>
         <div className={styles['get-data__dropzone--header-small']}>(or click to browse)</div>
       </Dropzone>
@@ -40,8 +43,8 @@ export default connect(
     selectedTemplate: state.vocabApp.selectedTemplate
   }),
   dispatch => ({
-    onDrop: files => {
-      dispatch(loadUserData(files));
+    onDrop: (files, selectedTemplate) => {
+      dispatch(loadUserData(files, selectedTemplate));
     },
     redirect: path => dispatch(push(path))
   })

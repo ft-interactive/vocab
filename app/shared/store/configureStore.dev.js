@@ -11,7 +11,7 @@ import {
   replayActionRenderer
 } from 'electron-redux';
 import getRootReducer from '../reducers';
-import * as vocabActions from '../actions/vocab';
+import * as vocabActions from '../actions';
 import type { vocabStateType } from '../reducers/vocab';
 
 /**

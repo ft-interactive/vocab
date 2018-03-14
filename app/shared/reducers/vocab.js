@@ -6,7 +6,7 @@ import {
   LOAD_USER_DATA,
   SAVE_SPREADSHEET,
   SYNC_REPO
-} from '../actions/vocab';
+} from '../actions';
 
 export type sheetDataType = {
   rows: (?(string[]))[]

@@ -208,7 +208,7 @@
     "react-spreadsheet-component": "^1.0.2",
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
-    "simple-git": "^1.85.0",
+    "simple-git": "^1.92.0",
     "source-map-support": "^0.4.15"
   },
   "devEngines": {

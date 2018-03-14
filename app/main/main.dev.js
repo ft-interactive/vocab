@@ -14,7 +14,7 @@ import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
 import templatesPromise from './load-templates';
 import configureStore from '../shared/store/configureStore';
-import { loadTemplateData } from '../shared/actions/vocab';
+import { loadTemplateData } from '../shared/actions';
 // import runAutoUpdate from './auto-update';
 import syncVVTRepo from './manage-vvt-repo';
 

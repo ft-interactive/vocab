@@ -8,7 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import type { Match } from 'react-router-dom';
-import { selectChartTemplate } from '../../shared/actions/vocab';
+import { selectChartTemplate } from '../../shared/actions';
 import { slug, bool } from '../../shared/utils';
 import styles from './ChartList.css';
 import type { templateType } from '../../shared/reducers/vocab';
