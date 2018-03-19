@@ -16,12 +16,13 @@ export default () => (
     <DimensionList className={styles.app__sidebar} />
     <section className={styles.app__content}>
       <Switch>
+        <Route path={'/choose-your-chart/:dimension'} component={ChartList} />
         <Route
-          exact
-          path="/"
           component={() => (
             <div>
-              <h1>Welcome to Vocab <sub>v2</sub></h1>
+              <h1>
+                Welcome to Vocab <sub>v2</sub>
+              </h1>
               <p>
                 Please select the dimensions of your data you wish to depict from the sidebar on the
                 left.
@@ -33,7 +34,6 @@ export default () => (
             </div>
           )}
         />
-        <Route path={'/choose-your-chart/:dimension'} component={ChartList} />
       </Switch>
     </section>
   </main>

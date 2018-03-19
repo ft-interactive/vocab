@@ -20,10 +20,14 @@ export const syncRepo = createAliasedAction(SYNC_REPO, status => ({
   payload: status
 }));
 
-export const loadTemplateData = createAliasedAction(LOAD_TEMPLATE_DATA, templates => ({
-  type: LOAD_TEMPLATE_DATA,
-  payload: templates
-}));
+export const loadTemplateData = createAliasedAction(
+  LOAD_TEMPLATE_DATA,
+  ({ templates, categories }) => ({
+    type: LOAD_TEMPLATE_DATA,
+    templates,
+    categories
+  })
+);
 
 export const selectChartTemplate = templateName => ({
   type: SELECT_CHART_TEMPLATE,

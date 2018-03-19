@@ -5,11 +5,20 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import categories from '../../../templates/docs/categories'; // eslint-disable-line
+import { connect } from 'react-redux';
 import { slug } from '../../shared/utils';
 import styles from './DimensionList.css';
+import type { categoryType } from '../../shared/reducers/vocab';
 
-export default ({ className }: { className: string }) => (
+type Props = {
+  className: string,
+  categories: categoryType[]
+};
+
+const DimensionList = ({
+  className,
+  categories
+}: Props) => (
   <aside className={className}>
     <ul className={styles['dimension-list__unordered-list']}>
       {categories.map(cat => (
@@ -26,3 +35,11 @@ export default ({ className }: { className: string }) => (
     </ul>
   </aside>
 );
+
+const mapStateToProps = state => ({
+  categories: state.vocabApp.categories
+});
+
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DimensionList);

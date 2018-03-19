@@ -14,6 +14,7 @@ export type sheetDataType = {
 
 export type vocabStateType = {
   templates: templateType[],
+  categories: categoryType[],
   selectedTemplate: string | null,
   userData: string[][],
   sheetData: ?sheetDataType
@@ -28,16 +29,26 @@ export type templateType = {
   disabled: ?boolean | void
 };
 
+export type categoryType = {
+  category: string,
+  colour: string,
+  description: string,
+  example: string
+}
+
 type actionType = {
   +type: string,
   payload?: any,
   selectedTemplate?: string,
   userData?: (?(string[]))[],
-  sheetData?: sheetDataType
+  sheetData?: sheetDataType,
+  templates?: templateType[],
+  categories?: categoryType[]
 };
 
 const initialState: vocabStateType = {
   templates: [],
+  categories: [],
   selectedTemplate: null,
   userData: [],
   sheetData: {
@@ -55,7 +66,8 @@ export default function vocabApp(state: vocabStateType = initialState, action: a
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,
-        templates: state.templates.concat(action.payload).filter(d => d && d.chartName !== '')
+        templates: action.templates,
+        categories: action.categories,
       };
     case SELECT_CHART_TEMPLATE:
       return {

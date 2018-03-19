@@ -15,7 +15,7 @@ const HOME = homedir();
 const VVTUrl = 'git@github.com:ft-interactive/visual-vocabulary-templates.git';
 
 export default async function syncVVTRepo(store: Store<*, *, *>) {
-  const path = join(HOME, '.vocab/', 'visual-vocabulary/');
+  const path = join(HOME, '.vocab/', 'visual-vocabulary-templates/');
   const Git = simpleGit();
 
   // Create parent config dir if doesn't exist

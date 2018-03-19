@@ -46,7 +46,7 @@ async function start() {
   const { store } = configureStore(global.state, 'main');
 
   try {
-    const templates = await templatesPromise;
+    const templates = await templatesPromise();
     store.dispatch(loadTemplateData(templates));
   } catch (e) {
     console.error(e);
