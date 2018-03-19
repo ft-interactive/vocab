@@ -34,16 +34,16 @@ export type categoryType = {
   colour: string,
   description: string,
   example: string
-}
+};
 
 type actionType = {
   +type: string,
-  payload?: any,
   selectedTemplate?: string,
   userData?: (?(string[]))[],
   sheetData?: sheetDataType,
   templates?: templateType[],
-  categories?: categoryType[]
+  categories?: categoryType[],
+  docsPath: string
 };
 
 const initialState: vocabStateType = {
@@ -53,7 +53,8 @@ const initialState: vocabStateType = {
   userData: [],
   sheetData: {
     rows: []
-  }
+  },
+  docsPath: '',
 };
 
 export default function vocabApp(state: vocabStateType = initialState, action: actionType) {
@@ -61,13 +62,13 @@ export default function vocabApp(state: vocabStateType = initialState, action: a
     case SYNC_REPO:
       return {
         ...state,
-        repoUpdated: action.payload
       };
     case LOAD_TEMPLATE_DATA:
       return {
         ...state,
         templates: action.templates,
         categories: action.categories,
+        docsPath: action.docsPath,
       };
     case SELECT_CHART_TEMPLATE:
       return {

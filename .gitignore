@@ -1,3 +1,5 @@
+app/main/main.prod.*
+
 # Logs
 logs
 *.log

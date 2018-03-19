@@ -22,10 +22,11 @@ export const syncRepo = createAliasedAction(SYNC_REPO, status => ({
 
 export const loadTemplateData = createAliasedAction(
   LOAD_TEMPLATE_DATA,
-  ({ templates, categories }) => ({
+  ({ templates, categories, docsPath }) => ({
     type: LOAD_TEMPLATE_DATA,
     templates,
-    categories
+    categories,
+    docsPath
   })
 );
 

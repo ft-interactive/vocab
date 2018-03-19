@@ -52,4 +52,4 @@ function configureStore(initialState?: { vocabApp: vocabStateType }, scope: stri
   return { store, history };
 }
 
-export default { configureStore };
+export default configureStore;

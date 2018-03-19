@@ -1,5 +1,5 @@
 {
-  "name": "Vocab",
+  "name": "Vocab2",
   "productName": "vocab",
   "version": "2.0.0",
   "description":
@@ -40,8 +40,8 @@
   },
   "browserslist": "electron 1.6",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Vocab2",
+    "appId": "org.ft.vocab2",
     "files": [
       "dist/",
       "node_modules/",
@@ -68,7 +68,8 @@
       "target": ["nsis"]
     },
     "linux": {
-      "target": ["deb", "AppImage"]
+      "target": ["deb", "AppImage"],
+      "category": "Graphics"
     },
     "directories": {
       "buildResources": "resources",

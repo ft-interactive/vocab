@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { getInitialStateRenderer } from 'electron-redux';
-import { push } from 'react-router-redux';
 import Root from './containers/Root';
 import configureStore from '../shared/store/configureStore';
 import './app.global.css';

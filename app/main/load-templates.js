@@ -5,7 +5,7 @@ import { join } from 'path';
 
 const HOME = homedir();
 const vvtPath = join(HOME, '.vocab/', 'visual-vocabulary-templates/');
-const categories = require(`${vvtPath}/docs/categories`);
+const categories = __non_webpack_require__(join(vvtPath, 'docs', 'categories'));
 
 export default async function () {
   const templates = await new Promise((resolve, reject) => {
@@ -24,5 +24,6 @@ export default async function () {
   return {
     templates: templates.filter(d => d.chartName),
     categories: categories.filter(d => d.category),
+    docsPath: join(vvtPath, 'docs/'),
   };
 }

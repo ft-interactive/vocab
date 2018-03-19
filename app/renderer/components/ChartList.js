@@ -16,10 +16,11 @@ import type { templateType } from '../../shared/reducers/vocab';
 type Props = {
   templates: Array<templateType>,
   onTemplateClick: (chartName: string) => void,
-  match: Match
+  match: Match,
+  docsPath: string
 };
 
-const chartList = ({ templates, onTemplateClick, match }: Props) => (
+const chartList = ({ templates, onTemplateClick, match, docsPath }: Props) => (
   <ul className={styles['chart-list__ul']}>
     {templates.filter(t => slug(t.category) === match.params.dimension && bool(t.avail)).map(t => (
       <li className={styles['chart-list__li']} key={slug(t.chartName)}>
@@ -30,7 +31,7 @@ const chartList = ({ templates, onTemplateClick, match }: Props) => (
           >
             <img
               className={styles['chart-list__img']}
-              src={`${__dirname}/../../templates/docs/icons/${t.img}`}
+              src={`${docsPath}/icons/${t.img}`}
               alt=""
             />
             <h2 className={styles['chart-list__header']}>{t.chartName}</h2>
@@ -50,7 +51,7 @@ const chartList = ({ templates, onTemplateClick, match }: Props) => (
         >
           <img
             className={styles['chart-list__img']}
-            src={`${__dirname}/../../templates/docs/icons/${t.img}`}
+            src={`${docsPath}/icons/${t.img}`}
             alt=""
           />
           <h2 className={styles['chart-list__header']}>{t.chartName}</h2>
@@ -62,7 +63,8 @@ const chartList = ({ templates, onTemplateClick, match }: Props) => (
 );
 
 const mapStateToProps = state => ({
-  templates: state.vocabApp.templates
+  templates: state.vocabApp.templates,
+  docsPath: state.vocabApp.docsPath,
 });
 
 const mapDispatchToProps = dispatch => ({
