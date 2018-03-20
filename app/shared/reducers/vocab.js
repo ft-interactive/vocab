@@ -43,10 +43,10 @@ type actionType = {
   sheetData?: sheetDataType,
   templates?: templateType[],
   categories?: categoryType[],
-  docsPath: string
+  docsPath?: string
 };
 
-const initialState: vocabStateType = {
+export const initialState: vocabStateType = {
   templates: [],
   categories: [],
   selectedTemplate: null,

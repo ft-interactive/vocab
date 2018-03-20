@@ -5,7 +5,6 @@
  */
 
 import simpleGit from 'simple-git/promise';
-import type { Store } from 'redux';
 import { statSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
@@ -14,7 +13,7 @@ import { syncRepo } from '../shared/actions';
 const HOME = homedir();
 const VVTUrl = 'git@github.com:ft-interactive/visual-vocabulary-templates.git';
 
-export default async function syncVVTRepo(store: Store<*, *, *>) {
+export default async function syncVVTRepo() {
   const path = join(HOME, '.vocab/', 'visual-vocabulary-templates/');
   const Git = simpleGit();
 
@@ -26,8 +25,10 @@ export default async function syncVVTRepo(store: Store<*, *, *>) {
       try {
         mkdirSync(join(HOME, '.vocab'));
       } catch (ee) {
-        console.error(ee);
+        throw e;
       }
+    } else {
+      throw e;
     }
   }
 
@@ -37,11 +38,13 @@ export default async function syncVVTRepo(store: Store<*, *, *>) {
   } catch (e) {
     if (e.code === 'ENOENT') {
       try {
-        await Git.clone(VVTUrl, path);
+        await Git.clone(VVTUrl, path, { '--depth': 1 });
         console.info(`Visual Vocabulary cloned to ${path}`);
       } catch (ee) {
-        console.error(ee);
+        throw ee;
       }
+    } else {
+      throw e;
     }
   }
 
@@ -52,7 +55,6 @@ export default async function syncVVTRepo(store: Store<*, *, *>) {
     // Pull from GitHub
     await Git.pull();
     console.info('Update done');
-    store.dispatch(syncRepo(true));
   } catch (e) {
     console.error(e);
     // This is likely a merge conflict due to weirdness in the Visual Vocab dir
@@ -64,10 +66,11 @@ export default async function syncVVTRepo(store: Store<*, *, *>) {
         try {
           await Git.pull(console.error);
         } catch (eee) {
-          console.error(eee); // @TODO find a better way of notifying the user
-          store.dispatch(syncRepo(false));
+          throw eee;
         }
       }
+    } else {
+      throw e;
     }
   }
 }

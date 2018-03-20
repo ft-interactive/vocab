@@ -21,7 +21,6 @@ import type { vocabStateType } from '../reducers/vocab';
  */
 const configureStore = (initialState?: { vocabApp: vocabStateType }, scope = 'main') => {
   let history;
-
   // Redux Configuration
   let middleware = [];
 

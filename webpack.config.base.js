@@ -9,7 +9,7 @@ import { dependencies as externals } from './app/package.json';
 
 const vvtPath = path.join(homedir(), '.vocab/', 'visual-vocabulary-templates/');
 const categoriesDataPath = path.join(vvtPath, 'docs', 'categories');
-console.log(`CATEGORIES DATA PATH: ${categoriesDataPath}`);
+
 export default {
   externals: [...Object.keys(externals || {}), categoriesDataPath],
 
