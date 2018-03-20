@@ -46,17 +46,17 @@ async function start() {
   const { store } = configureStore(global.state, 'main');
 
   try {
+    await syncVVTRepo(store);
+  } catch (e) {
+    console.error('Error synchronising VVT repo');
+    throw e;
+  }
+
+  try {
     const templates = await templatesPromise();
     store.dispatch(loadTemplateData(templates));
   } catch (e) {
     console.error(e);
-  }
-
-  try {
-    await syncVVTRepo(store);
-  } catch (e) {
-    console.dir(e);
-    console.error('Error synchronising VVT repo');
   }
 
   // runAutoUpdate(mainWindow, store);
