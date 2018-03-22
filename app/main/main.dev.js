@@ -46,7 +46,7 @@ async function start() {
   const { store } = configureStore(global.state, 'main');
 
   try {
-    await syncVVTRepo(store);
+    await syncVVTRepo();
   } catch (e) {
     console.error('Error synchronising VVT repo');
     throw e;

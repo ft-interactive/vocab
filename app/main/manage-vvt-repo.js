@@ -8,10 +8,9 @@ import simpleGit from 'simple-git/promise';
 import { statSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
-import { syncRepo } from '../shared/actions';
 
 const HOME = homedir();
-const VVTUrl = 'git@github.com:ft-interactive/visual-vocabulary-templates.git';
+const VVTUrl = 'https://github.com/ft-interactive/visual-vocabulary-templates.git';
 
 export default async function syncVVTRepo() {
   const path = join(HOME, '.vocab/', 'visual-vocabulary-templates/');
@@ -56,18 +55,25 @@ export default async function syncVVTRepo() {
     await Git.pull();
     console.info('Update done');
   } catch (e) {
-    console.error(e);
     // This is likely a merge conflict due to weirdness in the Visual Vocab dir
-    if (e.match('overwritten by merge')) {
+    if (e.message.includes('overwritten by merge')) {
       try {
         await Git.reset('hard');
         await Git.clean('f', ['-d']);
       } catch (ee) {
         try {
-          await Git.pull(console.error);
+          await Git.pull();
         } catch (eee) {
           throw eee;
         }
+      }
+    } else if (e.message.includes('Permission denied (publickey).')) {
+      try {
+        await Git.removeRemote('origin');
+        await Git.addRemote('origin', VVTUrl);
+        await Git.pull('origin', 'master');
+      } catch (ee) {
+        throw ee;
       }
     } else {
       throw e;
