@@ -52,7 +52,7 @@ export default async function syncVVTRepo() {
     Git.cwd(path);
 
     // Pull from GitHub
-    await Git.pull();
+    await Git.pull('origin', 'master');
     console.info('Update done');
   } catch (e) {
     // This is likely a merge conflict due to weirdness in the Visual Vocab dir

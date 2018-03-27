@@ -51,35 +51,31 @@ export const loadUserData = (files, selectedTemplate) => dispatch =>
       })
     )
     .then(({ userData }) => {
-      // Grab only the first sheet -- if annotated, pull off the "data" attribute.
-      const data =
-        userData.length && Array.isArray(userData[0]) // eslint-disable-line no-nested-ternary
-          ? userData[0]
-          : userData[0].data ? userData[0].data : null;
+      if (userData && userData.length > 0) {
+        const headerRow = userData[0];
 
-      if (data) {
-        const parsed = data.reduce((acc, cur, idx) => {
-          if (idx === 0) {
-            // Add header row so it displays properly
-            const headerRow = ['-', ...Object.keys(cur)];
-            if (!Object.keys(cur).includes(() => 'annotate')) {
-              headerRow.push('annotate');
-            }
-            if (!Object.keys(cur).includes(() => 'highlight')) {
-              headerRow.push('highlight');
-            }
-            acc.push(headerRow);
-            acc.unshift(Array(headerRow.length).fill(''));
-          }
+        if (!headerRow.includes('highlight')) {
+          headerRow.push('highlight');
+        }
 
-          const newRow = ['-', ...Object.values(cur)];
-          newRow.length = acc[0].length;
+        if (!headerRow.includes('annotate')) {
+          headerRow.push('annotate');
+        }
 
-          return [...acc, newRow.fill('', Object.values(cur).length + 1)];
-        }, []);
+        const parsed = userData
+          .slice(1)
+          .filter(d => d.join('') !== '')
+          .map((el) => {
+            const origLen = el.length;
+            el.length = headerRow.length; // eslint-disable-line no-param-reassign
+            return el.fill('', origLen);
+          }, []);
 
         return {
-          sheetData: parsed,
+          sheetData: [
+            headerRow,
+            ...parsed,
+          ],
           selectedTemplate
         };
       }
